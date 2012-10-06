@@ -6,6 +6,10 @@ key_trigger {
   input: KEY_DOWN
   action: "down"
 }
+key_trigger {
+  input: KEY_SPACE
+  action: "profiler_toggle"
+}
 gamepad_trigger {
   input: GAMEPAD_LPAD_UP
   action: "up"
