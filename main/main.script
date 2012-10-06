@@ -1,8 +1,12 @@
+require "level.level_util"
+
 function init(self)
 	msg.post(nil, "acquire_input_focus")
 end
 
 function update(self, dt)
+	-- temp draw level
+	level_draw()
 end
 
 function on_message(self, message_id, message)

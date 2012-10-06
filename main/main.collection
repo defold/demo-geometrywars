@@ -1,5 +1,20 @@
 name: "parallax"
 instances {
+  id: "level"
+  prototype: "/level/level.go"
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+}
+instances {
   id: "main"
   prototype: "/main/main.go"
   position {
