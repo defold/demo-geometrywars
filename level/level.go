@@ -14,3 +14,19 @@ embedded_components {
     w: 1.0
   }
 }
+embedded_components {
+  id: "model"
+  type: "model"
+  data: "mesh: \"/level/grid.dae\"\nmaterial: \"/level/grid.material\"\ntextures: \"/level/line.png\"\n"
+  position {
+    x: 100.0
+    y: 60.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+}

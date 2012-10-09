@@ -1,0 +1,13 @@
+name: "grid"
+tags: "text"
+vertex_program: "/level/grid.vp"
+fragment_program: "/level/grid.fp"
+vertex_constants {
+  name: "view_proj"
+  type: CONSTANT_TYPE_VIEWPROJ
+}
+vertex_constants {
+  name: "world"
+  type: CONSTANT_TYPE_WORLD
+}
+textures: "/level/line.png"
