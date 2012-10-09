@@ -1,0 +1,16 @@
+function init(self)
+	self.phase = 0
+end
+
+
+function update(self, dt)
+	local x = math.sin(self.phase) * 100 + 200
+	local y = math.cos(self.phase * 0.7) * 100 + 200
+	local p = math.sin(self.phase * 3) * 1000 + 500
+	
+	
+	msg.post("#model", "set_constant", { name_hash = hash("attractor"), value = vmath.vector4(x, y, 0, p) })
+	
+	self.phase = self.phase + dt * 2
+end
+
