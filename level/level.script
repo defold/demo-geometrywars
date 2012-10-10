@@ -1,5 +1,6 @@
 function init(self)
 	self.phase = 0
+	msg.post("#music", "play_sound")
 end
 
 
