@@ -1,6 +1,6 @@
 require "level.level_util"
 
-local spawn_rate = 0.5
+local spawn_rate = 5
 
 function init(self)
 	self.spawn_timer = 0

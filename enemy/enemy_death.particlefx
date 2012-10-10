@@ -75,7 +75,7 @@ emitters {
     key: EMITTER_KEY_PARTICLE_SPEED
     points {
       x: 0.0
-      y: 500.0
+      y: 700.0
       t_x: 1.0
       t_y: 0.0
     }
@@ -135,7 +135,7 @@ emitters {
     key: PARTICLE_KEY_SCALE
     points {
       x: 0.0
-      y: 1.0
+      y: 0.7
       t_x: 1.0
       t_y: 0.0
     }
@@ -176,16 +176,10 @@ emitters {
       t_y: 0.16917957
     }
     points {
-      x: 0.29105127
-      y: 0.9946804
-      t_x: 0.78676903
-      t_y: 0.6172475
-    }
-    points {
-      x: 0.6403128
-      y: 0.38705966
-      t_x: 0.31240645
-      t_y: -0.94994855
+      x: 0.36883628
+      y: 0.44181666
+      t_x: 0.3252373
+      t_y: -0.94563246
     }
     points {
       x: 1.0
@@ -212,9 +206,21 @@ emitters {
       key: MODIFIER_KEY_MAGNITUDE
       points {
         x: 0.0
-        y: 0.5
-        t_x: 1.0
-        t_y: 0.0
+        y: 0.7688172
+        t_x: 0.8430167
+        t_y: 0.53788745
+      }
+      points {
+        x: 0.60946745
+        y: 7.1605043
+        t_x: 0.04364936
+        t_y: 0.9990469
+      }
+      points {
+        x: 1.0
+        y: 19.397753
+        t_x: 0.01972456
+        t_y: 0.99980545
       }
     }
     properties {
