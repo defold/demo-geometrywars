@@ -3,6 +3,7 @@ title = Side-Scroller
 
 [bootstrap]
 main_collection = /main/main.collectionc
+render = /render/default.renderc
 
 [input]
 game_binding = /input/game.input_bindingc
@@ -14,4 +15,10 @@ height = 720
 [physics]
 scale = 0.02
 debug = 0
+
+[particle_fx]
+max_particle_count = 10000
+
+[sprite]
+max_count = 128
 

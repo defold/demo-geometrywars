@@ -10,6 +10,10 @@ key_trigger {
   input: KEY_SPACE
   action: "profiler_toggle"
 }
+mouse_trigger {
+  input: MOUSE_BUTTON_1
+  action: "click"
+}
 gamepad_trigger {
   input: GAMEPAD_LPAD_UP
   action: "up"

@@ -29,3 +29,33 @@ instances {
     w: 1.0
   }
 }
+instances {
+  id: "player"
+  prototype: "/player/player.go"
+  position {
+    x: 264.55737
+    y: 360.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+}
+instances {
+  id: "spawner"
+  prototype: "/main/spawner.go"
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+}
