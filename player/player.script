@@ -84,7 +84,6 @@ function update(self, dt)
 	local threat_dir = vmath.normalize(d)
 	local threat_align = math.max(0, vmath.dot(target_dir, threat_dir))
 	local weight = threat_align * self.max_threat
-	print("w: " .. weight .. ", a: " .. threat_align)
 	local dir = vmath.normalize(weight * -threat_dir + (1 - weight) * target_dir)
 	local target_velocity = dir * max_speed
 	local acc = target_velocity - self.velocity
