@@ -8,20 +8,40 @@ local drag = 0.2
 local max_speed = 100
 local max_speed_sq = max_speed * max_speed
 local death_duration = 2
+local spawn_duration = 0.8
+local spawn_bob_rate = 5
+local spawn_bob_mag = 0.5
 
 function init(self)
 	self.timer = 0
-	self.velocity = vmath.vector3(100, 0, 0)
+	self.velocity = vmath.vector3(0, 0, 0)
 	sprite.set_constant("#sprite", "tint", vmath.vector4(0.2, 1, 0.3, 1))
 	msg.post("/player", "request_transform")
+	self.death = false
 	self.death_timer = 0
+	self.spawning = true
+	self.spawn_timer = spawn_duration
 end
 
 function update(self, dt)
-	if self.death_timer > 0 then
-		self.death_timer = self.death_timer - dt
-		if self.death_timer <= 0 then
-			go.delete()
+	if self.spawning then
+		self.spawn_timer = self.spawn_timer - dt
+		if self.spawn_timer < 0 then
+			self.spawning = false
+		else
+			local bounce_t = self.spawn_timer * (spawn_bob_rate / spawn_duration)
+			bounce_t = bounce_t - math.floor(bounce_t)
+			msg.post("#sprite", "set_scale", {scale = vmath.vector3(1 + bounce_t * spawn_bob_mag, 1 + bounce_t * spawn_bob_mag, 1)})
+		end
+		return
+	end
+	if self.death then
+		if self.death_timer > 0 then
+			self.death_timer = self.death_timer - dt
+			if self.death_timer <= 0 then
+				go.delete()
+			end
+			return
 		end
 		return
 	end
@@ -60,9 +80,14 @@ function on_message(self, message_id, message, sender)
 	if message_id == hash("transform_response") then
 		self.target = message.world_position
 	elseif message_id == hash("collision_response") then
-		self.death_timer = death_duration
-		msg.post("#particlefx", "start")
-		msg.post("#sprite", "disable")
+		if message.group == hash("player") then
+			print(go.get_position())
+			self.death = true
+			self.death_timer = death_duration
+			msg.post("#particlefx", "start")
+			msg.post("#sprite", "disable")
+			msg.post("#collisionobject", "disable")
+		end
 	end
 end
 

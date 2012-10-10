@@ -1,0 +1,34 @@
+require "level.level_util"
+
+local spawn_rate = 0.5
+
+function init(self)
+	self.spawn_timer = 0
+end
+
+function spawn()
+	local min, max = level_get_aabb()
+	local p = min + (math.random() * (max - min))
+	factory.create("#chaser_factory", p)
+end
+
+function update(self, dt)
+	self.spawn_timer = self.spawn_timer - dt
+	if self.spawn_timer < 0 then
+		self.spawn_timer = 1 / spawn_rate
+		spawn()
+	end
+end
+
+function on_message(self, message_id, message, sender)
+end
+
+function on_input(self, action_id, action)
+    -- Add input-handling code here
+    -- Remove this function if not needed
+end
+
+function on_reload(self)
+    -- Add reload-handling code here
+    -- Remove this function if not needed
+end

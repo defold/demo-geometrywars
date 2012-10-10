@@ -16,3 +16,9 @@ height = 720
 scale = 0.02
 debug = 0
 
+[particle_fx]
+max_particle_count = 10000
+
+[sprite]
+max_count = 128
+
