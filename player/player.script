@@ -15,6 +15,7 @@ function init(self)
 	self.velocity = vmath.vector3()
 	self.target_timer = 0
 	self.max_threat = 0
+	self.max_threat_position = vmath.vector3()
 	self.threat_position = vmath.vector3()
 	self.threats = {}
 end
@@ -52,6 +53,7 @@ local function calc_threat(self_p, threat_p)
 end
 
 local function update_threats(self, dt)
+	self.max_threat_position = vmath.vector3()
 	self.threat_position = vmath.vector3()
 	local mag = 0
 	self.max_threat = 0
@@ -64,11 +66,12 @@ local function update_threats(self, dt)
 	end
 	for i,v in ipairs(self.threats) do
 		local threat = calc_threat(p, v)
-		if threat > self.max_threat then
-			self.max_threat = threat
-		end
 		local w = threat / mag
 		self.threat_position = self.threat_position + v * w
+		if threat > self.max_threat then
+			self.max_threat = threat
+			self.max_threat_position = v
+		end
 	end
 	draw_cross(self.threat_position, vmath.vector4(1, 0, 0, 1))
 	self.threats = {}
@@ -98,9 +101,12 @@ function update(self, dt)
 	p = p + 0.5 * (v0 + self.velocity) * dt
 	go.set_position(p)
 	if self.max_threat > 0 then
+		threat_dir = vmath.normalize(self.max_threat_position - p)
 		go.set_rotation(vmath.quat_from_to(vmath.vector3(1, 0, 0), threat_dir))
+		msg.post("cannon#script", "set_target", {target = self.max_threat_position})
 	else
 		go.set_rotation(vmath.quat_from_to(vmath.vector3(1, 0, 0), target_dir))
+		msg.post("cannon#script", "set_target", {target = nil})
 	end
 	self.threat_level = 0
 	self.threat_position = vmath.vector3()

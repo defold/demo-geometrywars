@@ -18,7 +18,7 @@ function init(self)
 	self.timer = 0
 	self.velocity = vmath.vector3(0, 0, 0)
 	sprite.set_constant("#sprite", "tint", color)
-	msg.post("/player", "request_transform")
+	msg.post("/player/player", "request_transform")
 	self.spawning = true
 	self.spawn_timer = spawn_duration
 end
@@ -35,7 +35,7 @@ function update(self, dt)
 		end
 		return
 	end
-	msg.post("/player", "request_transform")
+	msg.post("/player/player", "request_transform")
 	self.timer = self.timer + dt
 	-- locomotion
 	local p = go.get_position()

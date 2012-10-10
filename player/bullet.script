@@ -1,0 +1,15 @@
+local speed = 600
+
+function update(self, dt)
+	local p = go.get_position()
+	local dir = vmath.rotate(go.get_rotation(), vmath.vector3(1, 0, 0))
+	local vel = dir * speed
+	p = p + vel * dt
+	go.set_position(p)
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("collision_response") then
+		go.delete()
+	end
+end
