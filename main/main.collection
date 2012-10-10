@@ -30,11 +30,71 @@ instances {
   }
 }
 instances {
+  id: "ne_marker"
+  prototype: "/main/marker.go"
+  position {
+    x: 110.0
+    y: 610.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+}
+instances {
+  id: "nw_marker"
+  prototype: "/main/marker.go"
+  position {
+    x: 1170.0
+    y: 610.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+}
+instances {
   id: "player"
   prototype: "/player/player.go"
   position {
     x: 264.55737
     y: 360.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+}
+instances {
+  id: "se_marker"
+  prototype: "/main/marker.go"
+  position {
+    x: 110.0
+    y: 110.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+}
+instances {
+  id: "sw_marker"
+  prototype: "/main/marker.go"
+  position {
+    x: 1170.0
+    y: 110.0
     z: 0.0
   }
   rotation {
