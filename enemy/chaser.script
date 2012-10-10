@@ -17,8 +17,6 @@ function init(self)
 	self.velocity = vmath.vector3(0, 0, 0)
 	sprite.set_constant("#sprite", "tint", vmath.vector4(0.2, 1, 0.3, 1))
 	msg.post("/player", "request_transform")
-	self.death = false
-	self.death_timer = 0
 	self.spawning = true
 	self.spawn_timer = spawn_duration
 end
@@ -32,16 +30,6 @@ function update(self, dt)
 			local bounce_t = self.spawn_timer * (spawn_bob_rate / spawn_duration)
 			bounce_t = bounce_t - math.floor(bounce_t)
 			msg.post("#sprite", "set_scale", {scale = vmath.vector3(1 + bounce_t * spawn_bob_mag, 1 + bounce_t * spawn_bob_mag, 1)})
-		end
-		return
-	end
-	if self.death then
-		if self.death_timer > 0 then
-			self.death_timer = self.death_timer - dt
-			if self.death_timer <= 0 then
-				go.delete()
-			end
-			return
 		end
 		return
 	end
@@ -81,12 +69,8 @@ function on_message(self, message_id, message, sender)
 		self.target = message.world_position
 	elseif message_id == hash("collision_response") then
 		if message.group == hash("player") then
-			print(go.get_position())
-			self.death = true
-			self.death_timer = death_duration
-			msg.post("#particlefx", "start")
-			msg.post("#sprite", "disable")
-			msg.post("#collisionobject", "disable")
+			particlefx.play("#particlefx")
+			go.delete()
 		end
 	end
 end
