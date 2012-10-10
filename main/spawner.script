@@ -1,26 +1,57 @@
 require "level.level_util"
 
-local spawn_rate = 5
-
-function init(self)
-	self.spawn_timer = 0
-end
-
-function spawn()
+function random_spawn(self)
 	local min, max = level_get_aabb()
 	local p = min + (math.random() * (max - min))
 	factory.create("#chaser_factory", p)
 end
 
+function burst_spawn(self)
+	for k,v in pairs(self.markers) do
+		factory.create("#chaser_factory", v)
+	end
+end
+
+function init(self)
+	self.markers = {[go.get_id("ne_marker")] = vmath.vector3(), [go.get_id("se_marker")] = vmath.vector3(),
+		[go.get_id("nw_marker")] = vmath.vector3(), [go.get_id("sw_marker")] = vmath.vector3()}
+	for k,v in pairs(self.markers) do
+		msg.post(k, "request_transform")
+	end
+	self.wave_timer = 0
+	self.waves = {
+		--duration, rate, callback 
+		{10, 0.5, random_spawn},
+		{2, 4, burst_spawn},
+	}
+	self.wave_index = 1
+	self.spawn_timer = 0
+	self.spawn_delay = 0 
+end
+
 function update(self, dt)
+	self.wave_timer = self.wave_timer - dt
+	if self.wave_timer < 0 then
+		self.wave_index = self.wave_index + 1
+		if self.wave_index > #self.waves then
+			self.wave_index = 1
+		end
+		local wave = self.waves[self.wave_index]
+		self.wave_timer = wave[1]
+		self.spawn_delay = 1/wave[2]
+	end
+	local wave = self.waves[self.wave_index]
 	self.spawn_timer = self.spawn_timer - dt
-	if self.spawn_timer < 0 then
-		self.spawn_timer = 1 / spawn_rate
-		spawn()
+	while self.spawn_timer < 0 do
+		self.spawn_timer = self.spawn_timer + self.spawn_delay
+		wave[3](self)
 	end
 end
 
 function on_message(self, message_id, message, sender)
+	if message_id == hash("transform_response") then
+		self.markers[sender.path] = message.world_position
+	end
 end
 
 function on_input(self, action_id, action)
