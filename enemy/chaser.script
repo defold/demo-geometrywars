@@ -3,6 +3,8 @@ require "level.level_util"
 local sprite_bounce_factor = 0.1
 local sprite_bounce_freq = 8
 
+local color = vmath.vector4(0.2, 1, 0.3, 1)
+
 local max_acc = 100
 local drag = 0.2
 local max_speed = 100
@@ -15,7 +17,7 @@ local spawn_bob_mag = 0.5
 function init(self)
 	self.timer = 0
 	self.velocity = vmath.vector3(0, 0, 0)
-	sprite.set_constant("#sprite", "tint", vmath.vector4(0.2, 1, 0.3, 1))
+	sprite.set_constant("#sprite", "tint", color)
 	msg.post("/player", "request_transform")
 	self.spawning = true
 	self.spawn_timer = spawn_duration
@@ -70,6 +72,7 @@ function on_message(self, message_id, message, sender)
 	elseif message_id == hash("collision_response") then
 		if message.group == hash("player") then
 			particlefx.play("#particlefx")
+			particlefx.set_constant("#particlefx", "emitter", "tint", color)
 			go.delete()
 		end
 	end
