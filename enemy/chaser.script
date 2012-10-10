@@ -70,7 +70,7 @@ function on_message(self, message_id, message, sender)
 	if message_id == hash("transform_response") then
 		self.target = message.world_position
 	elseif message_id == hash("collision_response") then
-		if message.group == hash("player") then
+		if message.group == hash("bullet") then
 			particlefx.play("#particlefx")
 			particlefx.set_constant("#particlefx", "emitter", "tint", color)
 			go.delete()

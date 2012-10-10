@@ -90,11 +90,11 @@ instances {
   }
 }
 instances {
-  id: "sw_marker"
-  prototype: "/main/marker.go"
+  id: "spawner"
+  prototype: "/main/spawner.go"
   position {
-    x: 1170.0
-    y: 110.0
+    x: 0.0
+    y: 0.0
     z: 0.0
   }
   rotation {
@@ -105,11 +105,11 @@ instances {
   }
 }
 instances {
-  id: "spawner"
-  prototype: "/main/spawner.go"
+  id: "sw_marker"
+  prototype: "/main/marker.go"
   position {
-    x: 0.0
-    y: 0.0
+    x: 1170.0
+    y: 110.0
     z: 0.0
   }
   rotation {
