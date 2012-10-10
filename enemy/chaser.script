@@ -18,6 +18,7 @@ function init(self)
 	self.timer = 0
 	self.velocity = vmath.vector3(0, 0, 0)
 	sprite.set_constant("#sprite", "tint", color)
+	sprite.set_constant("#light_mask", "tint", color)
 	msg.post("/player/player", "request_transform")
 	self.spawning = true
 	self.spawn_timer = spawn_duration
