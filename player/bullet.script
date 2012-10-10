@@ -6,6 +6,7 @@ function update(self, dt)
 	local vel = dir * speed
 	p = p + vel * dt
 	go.set_position(p)
+	msg.post("level#script", "add_impact", {magnitude = 10, position = p})
 end
 
 function on_message(self, message_id, message, sender)
