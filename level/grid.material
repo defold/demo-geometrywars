@@ -11,11 +11,18 @@ vertex_constants {
   type: CONSTANT_TYPE_WORLD
 }
 vertex_constants {
-  name: "attractor"
+  name: "attractor1"
   type: CONSTANT_TYPE_USER
-  value {
-    x: 300.0
-    y: 300.0
-    w: 500.0
-  }
+}
+vertex_constants {
+  name: "attractor2"
+  type: CONSTANT_TYPE_USER
+}
+vertex_constants {
+  name: "attractor3"
+  type: CONSTANT_TYPE_USER
+}
+vertex_constants {
+  name: "attractor4"
+  type: CONSTANT_TYPE_USER
 }

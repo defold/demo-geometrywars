@@ -1,0 +1,23 @@
+local fire_rate = 5
+
+function init(self)
+	self.timer = 0
+end
+
+function update(self, dt)
+	if self.target then
+		self.timer = self.timer - dt
+		if self.timer <= 0 then
+			self.timer = 1/fire_rate
+			factory.create("#factory", go.get_world_position(), go.get_world_rotation())
+		end
+	else
+		self.timer = 0
+	end
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("set_target") then
+		self.target = message.target
+	end
+end

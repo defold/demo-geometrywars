@@ -1,11 +1,127 @@
+require "level.level_util"
+
+local max_speed = 200
+local max_acc = 1000
+
+local max_target_duration = 3
+local target_margin = 100
+local target_dist = 50
+
+local threat_min_sq_dist = 20 * 20
+local threat_max_sq_dist = 175 * 175
+
 function init(self)
 	msg.post(nil, "acquire_input_focus")
+	self.velocity = vmath.vector3()
+	self.target_timer = 0
+	self.max_threat = 0
+	self.max_threat_position = vmath.vector3()
+	self.threat_position = vmath.vector3()
+	self.threats = {}
+end
+
+local function draw_cross(p, c)
+	local x = vmath.vector3(10, 0, 0)
+	local y = vmath.vector3(0, 10, 0)
+	msg.post("@render:", "draw_line", { start_point = p + x, end_point = p - x, color = c } )
+	msg.post("@render:", "draw_line", { start_point = p + y, end_point = p - y, color = c } )
+end
+
+local function update_target(self, dt)
+	self.target_timer = self.target_timer - dt
+	if self.target then
+		draw_cross(self.target, vmath.vector4(0, 1, 0, 1))
+		local len_sq = vmath.length_sqr(self.target - go.get_position())
+		if len_sq < target_dist * target_dist then
+			self.target_timer = 0
+		end
+	end
+	if self.target_timer <= 0 then
+		self.target_timer = max_target_duration
+		local min, max = level_get_aabb()
+		local margin = vmath.vector3(target_margin, target_margin, 0)
+		min = min + margin
+		max = max - margin
+		local p = min + (math.random() * (max - min))
+		self.target = p
+	end
+end
+
+local function calc_threat(self_p, threat_p)
+	local t = vmath.length_sqr(threat_p - self_p)
+	return 1 - math.max(0, math.min(1, (t - threat_min_sq_dist)/(threat_max_sq_dist - threat_min_sq_dist)))
+end
+
+local function update_threats(self, dt)
+	self.max_threat_position = vmath.vector3()
+	self.threat_position = vmath.vector3()
+	local mag = 0
+	self.max_threat = 0
+	local p = go.get_position()
+	for i,v in ipairs(self.threats) do
+		mag = mag + calc_threat(p, v)
+	end
+	if mag == 0 then
+		mag = 1
+	end
+	for i,v in ipairs(self.threats) do
+		local threat = calc_threat(p, v)
+		local w = threat / mag
+		self.threat_position = self.threat_position + v * w
+		if threat > self.max_threat then
+			self.max_threat = threat
+			self.max_threat_position = v
+		end
+	end
+	draw_cross(self.threat_position, vmath.vector4(1, 0, 0, 1))
+	self.threats = {}
+end
+
+function update(self, dt)
+	update_target(self, dt)
+	update_threats(self, dt)
+	local p = go.get_position()
+	local d = self.target - p
+	local target_dir = vmath.normalize(d)
+	d = self.threat_position - p
+	local threat_dir = vmath.normalize(d)
+	local threat_align = math.max(0, vmath.dot(target_dir, threat_dir))
+	local weight = threat_align * self.max_threat
+	local dir = vmath.normalize(weight * -threat_dir + (1 - weight) * target_dir)
+	local target_velocity = dir * max_speed
+	local acc = target_velocity - self.velocity
+	if vmath.length_sqr(acc) > 0 then
+		acc = max_acc * vmath.normalize(acc)
+	end
+	local v0 = self.velocity
+	self.velocity = self.velocity + acc * dt
+	if vmath.length_sqr(self.velocity) > max_speed * max_speed then
+		self.velocity = max_speed * vmath.normalize(self.velocity)
+	end
+	p = p + 0.5 * (v0 + self.velocity) * dt
+	go.set_position(p)
+	if self.max_threat > 0 then
+		threat_dir = vmath.normalize(self.max_threat_position - p)
+		go.set_rotation(vmath.quat_from_to(vmath.vector3(1, 0, 0), threat_dir))
+		msg.post("cannon#script", "set_target", {target = self.max_threat_position})
+	else
+		go.set_rotation(vmath.quat_from_to(vmath.vector3(1, 0, 0), target_dir))
+		msg.post("cannon#script", "set_target", {target = nil})
+	end
+	self.threat_level = 0
+	self.threat_position = vmath.vector3()
 end
 
 function on_message(self, message_id, message, sender)
 	if message_id == hash("collision_response") then
-		if message.group == hash("enemey") then
-			print("hit!!")
+		if sender.fragment == hash("sensor") then
+			table.insert(self.threats, message.other_position)
+		elseif sender.fragment == hash("body") then
+			if message.group == hash("enemy") then
+				-- TODO die
+			elseif message.group == hash("level") then
+				-- TODO bump
+			end
 		end
 	end
 end

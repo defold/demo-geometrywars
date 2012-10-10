@@ -18,8 +18,7 @@ function init(self)
 	self.timer = 0
 	self.velocity = vmath.vector3(0, 0, 0)
 	sprite.set_constant("#sprite", "tint", color)
-    sprite.set_constant("#light_mask", "tint", color)
-	msg.post("/player", "request_transform")
+	msg.post("/player/player", "request_transform")
 	self.spawning = true
 	self.spawn_timer = spawn_duration
 end
@@ -36,7 +35,7 @@ function update(self, dt)
 		end
 		return
 	end
-	msg.post("/player", "request_transform")
+	msg.post("/player/player", "request_transform")
 	self.timer = self.timer + dt
 	-- locomotion
 	local p = go.get_position()
@@ -71,7 +70,8 @@ function on_message(self, message_id, message, sender)
 	if message_id == hash("transform_response") then
 		self.target = message.world_position
 	elseif message_id == hash("collision_response") then
-		if message.group == hash("player") then
+		if message.group == hash("bullet") then
+			msg.post("level#script", "add_impact", {magnitude = 100, position = go.get_position()})
 			particlefx.play("#particlefx")
 			particlefx.set_constant("#particlefx", "emitter", "tint", color)
 			go.delete()
