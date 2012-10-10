@@ -64,7 +64,7 @@ embedded_components {
 embedded_components {
   id: "model"
   type: "model"
-  data: "mesh: \"/level/grid2.dae\"\nmaterial: \"/level/grid.material\"\ntextures: \"/level/line.png\"\n"
+  data: "mesh: \"/level/grid3.dae\"\nmaterial: \"/level/grid.material\"\ntextures: \"/level/line.png\"\n"
   position {
     x: 100.0
     y: 60.0
