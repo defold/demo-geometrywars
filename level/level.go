@@ -93,3 +93,19 @@ embedded_components {
     w: 1.0
   }
 }
+embedded_components {
+  id: "quad"
+  type: "model"
+  data: "mesh: \"/materials/quad.dae\"\nmaterial: \"/materials/light.material\"\n"
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+}

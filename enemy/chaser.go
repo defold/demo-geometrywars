@@ -45,6 +45,22 @@ embedded_components {
   }
 }
 embedded_components {
+  id: "light_mask"
+  type: "sprite"
+  data: "tile_set: \"/enemy/light_mask.tilesource\"\ndefault_animation: \"anim\"\nmaterial: \"/materials/light_mask.material\"\nblend_mode: BLEND_MODE_ALPHA\n"
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+}
+embedded_components {
   id: "sprite"
   type: "sprite"
   data: "tile_set: \"/enemy/chaser.tilesource\"\ndefault_animation: \"anim\"\nmaterial: \"/builtins/materials/sprite.material\"\nblend_mode: BLEND_MODE_ALPHA\n"

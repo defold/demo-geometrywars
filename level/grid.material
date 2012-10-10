@@ -19,4 +19,3 @@ vertex_constants {
     w: 500.0
   }
 }
-textures: "/level/line.png"

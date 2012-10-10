@@ -1,6 +1,6 @@
 name: "Blur"
 tags: "blur"
-vertex_program: "/materials/blur.vp"
+vertex_program: "/materials/pass.vp"
 fragment_program: "/materials/blur.fp"
 fragment_constants {
   name: "params"

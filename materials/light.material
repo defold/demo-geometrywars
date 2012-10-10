@@ -1,0 +1,5 @@
+name: "Light"
+tags: "quad"
+vertex_program: "/materials/pass.vp"
+fragment_program: "/materials/pass.fp"
+textures: "DIFFUSE_TEXTURE"
