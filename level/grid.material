@@ -1,5 +1,5 @@
 name: "grid"
-tags: "text"
+tags: "grid"
 vertex_program: "/level/grid.vp"
 fragment_program: "/level/grid.fp"
 vertex_constants {

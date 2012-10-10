@@ -1,0 +1,13 @@
+name: "Blur"
+tags: "blur"
+vertex_program: "/materials/blur.vp"
+fragment_program: "/materials/blur.fp"
+fragment_constants {
+  name: "params"
+  type: CONSTANT_TYPE_USER
+  value {
+    x: 1.0
+    y: 1.0
+  }
+}
+textures: "T"

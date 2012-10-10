@@ -1,8 +1,18 @@
+local function dup_table(t)
+    local nt = {}
+    for index, value in pairs(t) do
+        nt[index] = value  
+    end    
+    return nt
+end
+
 function init(self)
     self.tile_pred = render.predicate({"tile"})
     self.gui_pred = render.predicate({"gui"})
     self.text_pred = render.predicate({"text"})
     self.particle_pred = render.predicate({"particle"})
+    self.grid_pred = render.predicate({"grid"})
+    self.bloom_pred = render.predicate({"bloom"})
 
     self.clear_color = vmath.vector4(0, 0, 0, 0)
     self.clear_color.x = sys.get_config("render.clear_color_red", 0)
@@ -11,9 +21,34 @@ function init(self)
     self.clear_color.w = sys.get_config("render.clear_color_alpha", 0)
 
     self.view = vmath.matrix4()
+
+    local template = { format = render.FORMAT_RGB,
+                       width = render.get_window_width(),
+                       height = render.get_window_height(),
+                       min_filter = render.FILTER_LINEAR,
+                       mag_filter = render.FILTER_LINEAR,
+                       u_wrap = render.WRAP_CLAMP,
+                       v_wrap = render.WRAP_CLAMP }
+    
+
+    local rt_params = dup_table(template)
+    rt_params.format = render.FORMAT_RGBA
+    local rt_params_depth = dup_table(template)
+    rt_params_depth.format = render.FORMAT_DEPTH
+    self.rt = render.render_target("rt", {[render.BUFFER_COLOR_BIT] = rt_params, [render.BUFFER_DEPTH_BIT] = rt_params_depth})
+    
+
+    local blur_params = dup_table(template)
+    -- TODO: RGB?
+    blur_params.format = render.FORMAT_RGBA
+    self.blur_rt = render.render_target("blur_rt", {[render.BUFFER_COLOR_BIT] = blur_params})
+    
+    self.postfx_constants = render.constant_buffer()    
+    self.postfx_constants.params = vmath.vector4( 7.0 / render.get_window_width(), 0, 0, 0)
 end
 
 function update(self)
+    render.enable_render_target(self.rt)
     render.clear({[render.BUFFER_COLOR_BIT] = self.clear_color, [render.BUFFER_DEPTH_BIT] = 1})
 
     render.set_viewport(0, 0, render.get_window_width(), render.get_window_height())
@@ -27,18 +62,43 @@ function update(self)
 
     render.set_projection(vmath.matrix4_orthographic(0, render.get_width(), 0, render.get_height(), -1000, 1000))
 
+    render.draw(self.grid_pred)
     render.draw(self.tile_pred)
     render.draw(self.particle_pred)
-    render.draw_debug3d()
+    render.disable_render_target(self.rt)    
 
+    -- postfx
+    render.disable_state(render.STATE_BLEND)
+    render.set_view(vmath.matrix4())
+    render.set_projection(vmath.matrix4())
+
+    render.enable_render_target(self.blur_rt)
+    render.clear({[render.BUFFER_COLOR_BIT] = self.clear_color, [render.BUFFER_DEPTH_BIT] = 1})
+
+    render.enable_texture(0, self.rt, render.BUFFER_COLOR_BIT)    
+    render.draw(self.blur_pred, self.postfx_constants)
+    render.disable_texture(0, self.rt)
+    render.disable_render_target(self.rt)    
+   
+    render.clear({[render.BUFFER_COLOR_BIT] = self.clear_color, [render.BUFFER_DEPTH_BIT] = 1})
+
+    render.enable_texture(0, self.blur_rt, render.BUFFER_COLOR_BIT)    
+    render.enable_texture(1, self.rt, render.BUFFER_COLOR_BIT)
+    
+    render.draw(self.bloom_pred)
+
+    render.disable_texture(0, self.blur_rt)
+    render.disable_texture(1, self.rt)    
+    
     render.set_view(vmath.matrix4())
     render.set_projection(vmath.matrix4_orthographic(0, render.get_window_width(), 0, render.get_window_height(), -1, 1))
+    render.draw_debug3d()
 
     render.draw(self.gui_pred)
     render.draw(self.text_pred)
 
     render.set_depth_mask(false)
-    render.draw_debug2d()
+    render.draw_debug2d()       
 end
 
 function on_message(self, message_id, message)
