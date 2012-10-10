@@ -71,6 +71,7 @@ function on_message(self, message_id, message, sender)
 		self.target = message.world_position
 	elseif message_id == hash("collision_response") then
 		if message.group == hash("bullet") then
+			msg.post("level#script", "add_impact", {magnitude = 100, position = go.get_position()})
 			particlefx.play("#particlefx")
 			particlefx.set_constant("#particlefx", "emitter", "tint", color)
 			go.delete()

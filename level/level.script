@@ -1,17 +1,70 @@
+local attractor_count = 4
+local attractor_dist = 100
+local attractor_decay_speed = 100
+
 function init(self)
 	self.phase = 0
-	--msg.post("#music", "play_sound")
+	self.impacts = {}
+	self.attractors = {}
 end
 
+local function update_attractors(self, dt)
+	for i,v in ipairs(self.impacts) do
+		local imp_p = v[2]
+		local found = false
+		for j,u in ipairs(self.attractors) do
+			local att_p = u[3]
+			if vmath.length_sqr(att_p - imp_p) < attractor_dist * attractor_dist then
+				u[1] = 0
+				u[2] = math.max(v[1], u[2] + 0.1 * v[1])
+				u[3] = att_p + 0.5 * (imp_p - att_p)
+				found = true
+			end
+		end
+		if not found and #self.attractors < attractor_count then
+			table.insert(self.attractors, {0, v[1], v[2]})
+		end
+	end
+	self.impacts = {}
+	local count = #self.attractors
+	local i = 1
+	while i <= count do
+		local v = self.attractors[i]
+		local t = v[1]
+		local m = v[2]
+		local p = v[3]
+		t = t + dt * attractor_decay_speed
+		if t > m then
+			table.remove(self.attractors, i)
+			count = count - 1
+		else
+			v[1] = t
+			self.attractors[i] = v
+			i = i + 1
+		end
+	end
+end
 
 function update(self, dt)
-	local x = math.sin(self.phase) * 100 + 200
-	local y = math.cos(self.phase * 0.7) * 100 + 200
-	local p = math.sin(self.phase * 3) * 1000 + 500
+	update_attractors(self, dt)
 	
-	
-	msg.post("#model", "set_constant", { name_hash = hash("attractor"), value = vmath.vector4(x, y, 0, p) })
+	for i,v in ipairs(self.attractors) do
+		local t = v[1]
+		local m = v[2]
+		local p = v[3]
+		local f = (1 - t/m)
+		local f = -math.sin(t * 0.1) * m * f * f
+		print(f)
+		msg.post("#model", "set_constant", { name_hash = hash("attractor" .. i), value = vmath.vector4(p.x, p.y, 0, f) })
+	end
 	
 	self.phase = self.phase + dt * 2
 end
 
+function on_message(self, message_id, message, sender)
+	if message_id == hash("add_impact") then
+		-- TODO fix this!
+		local offset = vmath.vector3(100, 60, 0)
+		table.insert(self.impacts, {message.magnitude, message.position - offset})
+	end
+end
