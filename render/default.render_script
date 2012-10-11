@@ -66,6 +66,7 @@ function update(self)
     render.set_viewport(0, 0, LIGHT_SIZE, LIGHT_SIZE)
     render.enable_state(render.STATE_BLEND)
     
+    render.set_projection(vmath.matrix4_orthographic(0, render.get_width(), 0, render.get_height(), -1000, 1000))
     render.clear({[render.BUFFER_COLOR_BIT] = self.clear_color, [render.BUFFER_DEPTH_BIT] = 1})
     render.draw(self.light_mask_pred)
     render.draw(self.particle_light_pred)
