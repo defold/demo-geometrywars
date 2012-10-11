@@ -3,16 +3,17 @@ require "level.level_util"
 function random_spawn(self)
 	local min, max = level_get_aabb()
 	local p = min + (math.random() * (max - min))
-	factory.create("#chaser_factory", p)
+	factory.create(self.factories[self.factory_index], p)
 end
 
 function burst_spawn(self)
 	for k,v in pairs(self.markers) do
-		factory.create("#chaser_factory", v)
+		factory.create(self.factories[self.factory_index], v)
 	end
 end
 
 function init(self)
+	self.factories = {msg.url("#chaser_factory"), msg.url("#swirler_factory")}
 	self.markers = {[go.get_id("ne_marker")] = vmath.vector3(), [go.get_id("se_marker")] = vmath.vector3(),
 		[go.get_id("nw_marker")] = vmath.vector3(), [go.get_id("sw_marker")] = vmath.vector3()}
 	for k,v in pairs(self.markers) do
@@ -21,10 +22,13 @@ function init(self)
 	self.wave_timer = 0
 	self.waves = {
 		--duration, rate, callback 
+		{2, 0, nil},
 		{10, 0.5, random_spawn},
+		{2, 0, nil},
 		{2, 4, burst_spawn},
 	}
-	self.wave_index = 1
+	self.factory_index = 0
+	self.wave_index = 0
 	self.spawn_timer = 0
 	self.spawn_delay = 0 
 end
@@ -36,15 +40,25 @@ function update(self, dt)
 		if self.wave_index > #self.waves then
 			self.wave_index = 1
 		end
+		if self.waves[self.wave_index][3] then
+			self.factory_index = self.factory_index + 1
+			if self.factory_index > #self.factories then
+				self.factory_index = 1
+			end
+		end
 		local wave = self.waves[self.wave_index]
 		self.wave_timer = wave[1]
 		self.spawn_delay = 1/wave[2]
+		self.spawn_timer = 0
 	end
 	local wave = self.waves[self.wave_index]
 	self.spawn_timer = self.spawn_timer - dt
 	while self.spawn_timer < 0 do
 		self.spawn_timer = self.spawn_timer + self.spawn_delay
-		wave[3](self)
+		if wave[3] then
+			print("WAVE")
+			wave[3](self)
+		end
 	end
 end
 
