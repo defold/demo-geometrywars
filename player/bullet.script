@@ -12,5 +12,9 @@ end
 function on_message(self, message_id, message, sender)
 	if message_id == hash("collision_response") then
 		go.delete()
+	elseif message_id == hash("contact_point_response") then
+		if message.group == hash("level") then
+			factory.create("#factory", message.position, vmath.quat_rotation_z(math.atan2(-message.normal.x, message.normal.y)))
+		end 
 	end
 end

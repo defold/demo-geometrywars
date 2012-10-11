@@ -1,4 +1,4 @@
-image: "/enemy/shrapnel.png"
+image: "/shared/shrapnel.png"
 tile_width: 2
 tile_height: 16
 tile_margin: 0
@@ -7,9 +7,18 @@ collision: ""
 material_tag: "tile"
 collision_groups: "default"
 animations {
-  id: "anim"
+  id: "large"
   start_tile: 1
   end_tile: 1
+  playback: PLAYBACK_ONCE_FORWARD
+  fps: 30
+  flip_horizontal: 0
+  flip_vertical: 0
+}
+animations {
+  id: "small"
+  start_tile: 2
+  end_tile: 2
   playback: PLAYBACK_ONCE_FORWARD
   fps: 30
   flip_horizontal: 0

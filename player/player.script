@@ -42,7 +42,8 @@ local function update_target(self, dt)
 		local margin = vmath.vector3(target_margin, target_margin, 0)
 		min = min + margin
 		max = max - margin
-		local p = min + (math.random() * (max - min))
+		local ext = max - min
+		local p = min + vmath.vector3(math.random() * ext.x, math.random() * ext.y, 0)
 		self.target = p
 	end
 end
