@@ -1,0 +1,84 @@
+require "level.level_util"
+
+local color = vmath.vector4(0.5, 0.1, 0.8, 1)
+local particle_color = vmath.vector4(1, 0.2, 0.3, 1)
+
+local max_speed = 20
+local max_angle_speed = 2 * math.pi
+local death_duration = 2
+local spawn_duration = 0.8
+local spawn_bob_rate = 5
+local spawn_bob_mag = 0.5
+
+function init(self)
+	self.timer = 0
+	local angle = math.random() * math.pi * 2
+	self.dir = vmath.vector3(math.cos(angle), math.sin(angle), 0)
+	self.angle_speed = 0
+	sprite.set_constant("#sprite", "tint", color)
+	sprite.set_constant("#light_mask", "tint", color)
+	msg.post("/player/player", "request_transform")
+	self.spawning = true
+	self.spawn_timer = spawn_duration
+end
+
+function update(self, dt)
+	if self.spawning then
+		self.spawn_timer = self.spawn_timer - dt
+		if self.spawn_timer < 0 then
+			self.spawning = false
+		else
+			local bounce_t = self.spawn_timer * (spawn_bob_rate / spawn_duration)
+			bounce_t = bounce_t - math.floor(bounce_t)
+			msg.post("#sprite", "set_scale", {scale = vmath.vector3(1 + bounce_t * spawn_bob_mag, 1 + bounce_t * spawn_bob_mag, 1)})
+		end
+		return
+	end
+	msg.post("/player/player", "request_transform")
+	self.timer = self.timer + dt
+	-- locomotion
+	local p = go.get_position()
+	-- roam
+	local test_speed = (math.random() - 0.5) * 2 * max_angle_speed
+	local delta = test_speed - self.angle_speed
+	if delta >= 0 then
+		delta = dt * max_angle_speed
+	else
+		delta = -dt * max_angle_speed
+	end
+	self.angle_speed = self.angle_speed + delta
+	self.angle_speed = math.max(self.angle_speed, -max_angle_speed)
+	self.angle_speed = math.min(self.angle_speed, max_angle_speed)
+	local angle = math.atan2(self.dir.y, self.dir.x)
+	angle = angle + self.angle_speed * dt
+	self.dir = vmath.vector3(math.cos(angle), math.sin(angle), 0)
+	local velocity = self.dir * max_speed
+	-- integration
+	p = p + velocity * dt
+	go.set_position(p)
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("transform_response") then
+		self.target = message.world_position
+	elseif message_id == hash("collision_response") then
+		if message.group == hash("bullet") then
+			msg.post("level#script", "add_impact", {magnitude = 100, position = go.get_position()})
+            particlefx.play("#particlefx")
+            particlefx.play("#particlefx_light")
+            particlefx.set_constant("#particlefx", "emitter", "tint", particle_color)
+            particlefx.set_constant("#particlefx_light", "emitter", "tint", particle_color)
+			go.delete()
+		end
+	end
+end
+
+function on_input(self, action_id, action)
+    -- Add input-handling code here
+    -- Remove this function if not needed
+end
+
+function on_reload(self)
+    -- Add reload-handling code here
+    -- Remove this function if not needed
+end
