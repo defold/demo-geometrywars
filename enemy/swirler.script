@@ -1,6 +1,6 @@
 require "level.level_util"
 
-local color = vmath.vector4(0.2, 1, 0.3, 1)
+local color = vmath.vector4(1, 0.2, 0.3, 1)
 local particle_color = vmath.vector4(1, 0.2, 0.3, 1)
 
 local max_speed = 400
