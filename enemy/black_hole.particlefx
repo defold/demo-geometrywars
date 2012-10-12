@@ -238,7 +238,7 @@ emitters {
   }
 }
 emitters {
-  id: "emitter1"
+  id: "saturnus"
   mode: PLAY_MODE_LOOP
   duration: 1.0
   space: EMISSION_SPACE_WORLD
@@ -380,10 +380,10 @@ emitters {
       t_y: 0.13242833
     }
     points {
-      x: 0.5
-      y: 1.987824
-      t_x: 0.993966
-      t_y: 0.10968886
+      x: 0.49913043
+      y: 0.9560674
+      t_x: 1.0
+      t_y: -0.0
     }
     points {
       x: 1.0
@@ -405,7 +405,19 @@ emitters {
     key: PARTICLE_KEY_GREEN
     points {
       x: 0.0
-      y: 1.0
+      y: 0.20029062
+      t_x: 1.0
+      t_y: 0.0
+    }
+    points {
+      x: 0.49913043
+      y: 0.99484056
+      t_x: 0.99999475
+      t_y: -0.0032450305
+    }
+    points {
+      x: 1.0
+      y: 0.21413295
       t_x: 1.0
       t_y: 0.0
     }
@@ -414,7 +426,19 @@ emitters {
     key: PARTICLE_KEY_BLUE
     points {
       x: 0.0
-      y: 1.0
+      y: 0.21194951
+      t_x: 1.0
+      t_y: 0.0
+    }
+    points {
+      x: 0.5
+      y: 0.60536766
+      t_x: 1.0
+      t_y: 0.0
+    }
+    points {
+      x: 1.0
+      y: 0.1980232
       t_x: 1.0
       t_y: 0.0
     }
