@@ -53,8 +53,9 @@ function update(self, dt)
 		local m = v[2]
 		local p = v[3]
 		local f = (1 - t/m)
-		local f = -math.sin(t * 0.1) * m * f * f
-		msg.post("#model", "set_constant", { name_hash = hash("attractor" .. i), value = vmath.vector4(p.x, p.y, 0, f) })
+		local f = -100.0 * math.sin(t * 0.1) * m * f * f
+		msg.post("#modelx", "set_constant", { name_hash = hash("attractor" .. i), value = vmath.vector4(p.x, p.y, 0, f) })
+        msg.post("#modely", "set_constant", { name_hash = hash("attractor" .. i), value = vmath.vector4(p.x, p.y, 0, f) })
 	end
 	
 	self.phase = self.phase + dt * 2
