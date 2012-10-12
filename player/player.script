@@ -117,7 +117,7 @@ function on_message(self, message_id, message, sender)
 	if message_id == hash("collision_response") then
 		if sender.fragment == hash("sensor") then
 			table.insert(self.threats, message.other_position)
-		elseif sender.fragment == hash("body") then
+		else
 			if message.group == hash("enemy") then
 				-- TODO die
 			elseif message.group == hash("level") then

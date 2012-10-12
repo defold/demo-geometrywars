@@ -1,5 +1,20 @@
 name: "parallax"
 instances {
+  id: "black_hole"
+  prototype: "/enemy/black_hole.go"
+  position {
+    x: 980.9859
+    y: 474.6241
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+}
+instances {
   id: "level"
   prototype: "/level/level.go"
   position {

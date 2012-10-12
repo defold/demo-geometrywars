@@ -1,4 +1,5 @@
 require "level.level_util"
+require "shared.dynamics"
 
 local sprite_bounce_factor = 0.1
 local sprite_bounce_freq = 8
@@ -7,7 +8,6 @@ local color = vmath.vector4(0.2, 1, 0.3, 1)
 local particle_color = vmath.vector4(1, 0.2, 0.3, 1)
 
 local max_acc = 100
-local drag = 0.2
 local max_speed = 100
 local max_speed_sq = max_speed * max_speed
 local death_duration = 2
@@ -23,6 +23,7 @@ function init(self)
 	msg.post("/player/player", "request_transform")
 	self.spawning = true
 	self.spawn_timer = spawn_duration
+	self.dynamics = dynamics_init()
 end
 
 function update(self, dt)
@@ -49,17 +50,11 @@ function update(self, dt)
 			local target_vel = vmath.normalize(delta) * max_speed
 			local delta_vel = target_vel - self.velocity
 			if vmath.length_sqr(delta_vel) > 0 then
-				local acceleration = vmath.normalize(delta_vel) * max_acc
-				self.velocity = self.velocity + acceleration * dt
+				dynamics_add_acc(self.dynamics, vmath.normalize(delta_vel) * max_acc)
 			end
 		end
 	end
-	-- drag
-	self.velocity = (1 - drag * dt) * self.velocity
-	-- boundary
-	if vmath.length_sqr(self.velocity) > max_speed_sq then
-		self.velocity = vmath.normalize(self.velocity) * max_speed
-	end
+	self.velocity = dynamics_update(self.dynamics, self.velocity, dt)
 	-- integration
 	p = p + 0.5 * (self.velocity + v0) * dt
 	go.set_position(p)
@@ -72,13 +67,17 @@ function on_message(self, message_id, message, sender)
 	if message_id == hash("transform_response") then
 		self.target = message.world_position
 	elseif message_id == hash("collision_response") then
-		if message.group == hash("bullet") then
+		if message.group == hash("bullet") or message.group == hash("black_hole") then
 			msg.post("level#script", "add_impact", {magnitude = 100, position = go.get_position()})
             particlefx.play("#particlefx")
             particlefx.play("#particlefx_light")
             particlefx.set_constant("#particlefx", "emitter", "tint", particle_color)
             particlefx.set_constant("#particlefx_light", "emitter", "tint", particle_color)
 			go.delete()
+		end
+	else
+		if not self.spawning then
+			dynamics_on_message(self.dynamics, message_id, message, sender)
 		end
 	end
 end

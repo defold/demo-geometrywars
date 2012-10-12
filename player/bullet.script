@@ -1,20 +1,31 @@
+require "shared.dynamics"
+
 local speed = 600
+
+function init(self)
+	self.velocity = vmath.rotate(go.get_rotation(), vmath.vector3(1, 0, 0)) * speed
+	self.dynamics = dynamics_init()
+end
 
 function update(self, dt)
 	local p = go.get_position()
-	local dir = vmath.rotate(go.get_rotation(), vmath.vector3(1, 0, 0))
-	local vel = dir * speed
-	p = p + vel * dt
+	self.velocity = dynamics_update(self.dynamics, self.velocity, dt)
+	p = p + self.velocity * dt
 	go.set_position(p)
 	msg.post("level#script", "add_impact", {magnitude = 10, position = p})
+	self.acc = vmath.vector3()
 end
 
 function on_message(self, message_id, message, sender)
 	if message_id == hash("collision_response") then
-		go.delete()
+		if message.group ~= hash("force_field") then
+			go.delete()
+		end
 	elseif message_id == hash("contact_point_response") then
 		if message.group == hash("level") then
 			factory.create("#factory", message.position, vmath.quat_rotation_z(math.atan2(-message.normal.x, message.normal.y)))
-		end 
+		end
+	else
+		dynamics_on_message(self.dynamics, message_id, message, sender)
 	end
 end

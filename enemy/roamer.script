@@ -1,4 +1,5 @@
 require "level.level_util"
+require "shared.dynamics"
 
 local color = vmath.vector4(0.5, 0.1, 0.8, 1)
 local particle_color = vmath.vector4(1, 0.2, 0.3, 1)
@@ -20,6 +21,8 @@ function init(self)
 	msg.post("/player/player", "request_transform")
 	self.spawning = true
 	self.spawn_timer = spawn_duration
+	self.dynamics = dynamics_init()
+	self.velocity = vmath.vector3()
 end
 
 function update(self, dt)
@@ -52,9 +55,10 @@ function update(self, dt)
 	local angle = math.atan2(self.dir.y, self.dir.x)
 	angle = angle + self.angle_speed * dt
 	self.dir = vmath.vector3(math.cos(angle), math.sin(angle), 0)
-	local velocity = self.dir * max_speed
+	local target_velocity = self.dir * max_speed
+	self.velocity = dynamics_update(self.dynamics, self.velocity, dt)
 	-- integration
-	p = p + velocity * dt
+	p = p + (self.velocity + target_velocity) * dt
 	go.set_position(p)
 end
 
@@ -62,7 +66,7 @@ function on_message(self, message_id, message, sender)
 	if message_id == hash("transform_response") then
 		self.target = message.world_position
 	elseif message_id == hash("collision_response") then
-		if message.group == hash("bullet") then
+		if message.group == hash("bullet") or message.group == hash("black_hole") then
 			msg.post("level#script", "add_impact", {magnitude = 100, position = go.get_position()})
             particlefx.play("#particlefx")
             particlefx.play("#particlefx_light")
@@ -70,15 +74,9 @@ function on_message(self, message_id, message, sender)
             particlefx.set_constant("#particlefx_light", "emitter", "tint", particle_color)
 			go.delete()
 		end
+	else
+		if not self.spawning then
+			dynamics_on_message(self.dynamics, message_id, message, sender)
+		end
 	end
-end
-
-function on_input(self, action_id, action)
-    -- Add input-handling code here
-    -- Remove this function if not needed
-end
-
-function on_reload(self)
-    -- Add reload-handling code here
-    -- Remove this function if not needed
 end
