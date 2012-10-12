@@ -62,9 +62,25 @@ embedded_components {
   }
 }
 embedded_components {
-  id: "model"
+  id: "modelx"
   type: "model"
-  data: "mesh: \"/level/grid5.dae\"\nmaterial: \"/level/grid.material\"\ntextures: \"/level/line.png\"\n"
+  data: "mesh: \"/level/lines_x.dae\"\nmaterial: \"/level/grid_x.material\"\ntextures: \"/level/line.png\"\n"
+  position {
+    x: 100.0
+    y: 60.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+}
+embedded_components {
+  id: "modely"
+  type: "model"
+  data: "mesh: \"/level/lines_y.dae\"\nmaterial: \"/level/grid_y.material\"\ntextures: \"/level/line.png\"\n"
   position {
     x: 100.0
     y: 60.0
