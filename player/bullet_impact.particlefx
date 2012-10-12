@@ -1,7 +1,7 @@
 emitters {
   id: "emitter"
   mode: PLAY_MODE_ONCE
-  duration: 0.5
+  duration: 0.1
   space: EMISSION_SPACE_WORLD
   position {
     x: 0.0
@@ -15,12 +15,12 @@ emitters {
     w: 1.0
   }
   tile_source: "/shared/shrapnel.tilesource"
-  animation: "large"
+  animation: "small"
   material: "/builtins/materials/particlefx.material"
   blend_mode: BLEND_MODE_ADD_ALPHA
   particle_direction: PARTICLE_DIRECTION_INITIAL_DIRECTION
-  max_particle_count: 256
-  type: EMITTER_TYPE_SPHERE
+  max_particle_count: 8
+  type: EMITTER_TYPE_CONE
   properties {
     key: EMITTER_KEY_SPAWN_DELAY
     points {
@@ -35,7 +35,7 @@ emitters {
     key: EMITTER_KEY_SIZE_X
     points {
       x: 0.0
-      y: 2.0
+      y: 32.0
       t_x: 1.0
       t_y: 0.0
     }
@@ -45,7 +45,7 @@ emitters {
     key: EMITTER_KEY_SIZE_Y
     points {
       x: 0.0
-      y: 1.0
+      y: 8.0
       t_x: 1.0
       t_y: 0.0
     }
@@ -65,27 +65,27 @@ emitters {
     key: EMITTER_KEY_PARTICLE_LIFE_TIME
     points {
       x: 0.0
-      y: 2.0
+      y: 0.5
       t_x: 1.0
       t_y: 0.0
     }
-    spread: 0.0
+    spread: 0.1
   }
   properties {
     key: EMITTER_KEY_PARTICLE_SPEED
     points {
       x: 0.0
-      y: 700.0
+      y: 300.0
       t_x: 1.0
       t_y: 0.0
     }
-    spread: 50.0
+    spread: 100.0
   }
   properties {
     key: EMITTER_KEY_PARTICLE_SIZE
     points {
       x: 0.0
-      y: 40.0
+      y: 20.0
       t_x: 1.0
       t_y: 0.0
     }
@@ -135,7 +135,7 @@ emitters {
     key: PARTICLE_KEY_SCALE
     points {
       x: 0.0
-      y: 0.7
+      y: 1.0
       t_x: 1.0
       t_y: 0.0
     }
@@ -171,28 +171,22 @@ emitters {
     key: PARTICLE_KEY_ALPHA
     points {
       x: 0.0
-      y: 0.96742266
-      t_x: 0.9855853
-      t_y: 0.16917957
-    }
-    points {
-      x: 0.36883628
-      y: 0.44181666
-      t_x: 0.3252373
-      t_y: -0.94563246
+      y: 0.9988521
+      t_x: 0.99991566
+      t_y: 0.0129876025
     }
     points {
       x: 1.0
-      y: -0.022787122
-      t_x: 1.0
-      t_y: 0.0
+      y: 0.0072254334
+      t_x: 0.27689195
+      t_y: -0.9609011
     }
   }
   modifiers {
     type: MODIFIER_TYPE_DRAG
     use_direction: 0
     position {
-      x: 1.926407
+      x: 0.0
       y: 0.0
       z: 0.0
     }
@@ -206,22 +200,11 @@ emitters {
       key: MODIFIER_KEY_MAGNITUDE
       points {
         x: 0.0
-        y: 0.7688172
-        t_x: 0.8430167
-        t_y: 0.53788745
+        y: 1.5
+        t_x: 1.0
+        t_y: 0.0
       }
-      points {
-        x: 0.60946745
-        y: 7.1605043
-        t_x: 0.04364936
-        t_y: 0.9990469
-      }
-      points {
-        x: 1.0
-        y: 19.397753
-        t_x: 0.01972456
-        t_y: 0.99980545
-      }
+      spread: 0.5
     }
     properties {
       key: MODIFIER_KEY_ATTENUATION
@@ -231,6 +214,7 @@ emitters {
         t_x: 1.0
         t_y: 0.0
       }
+      spread: 0.0
     }
   }
 }

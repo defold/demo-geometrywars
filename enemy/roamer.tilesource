@@ -1,6 +1,6 @@
-image: "/enemy/shrapnel.png"
-tile_width: 2
-tile_height: 16
+image: "/enemy/roamer.png"
+tile_width: 32
+tile_height: 32
 tile_margin: 0
 tile_spacing: 0
 collision: ""

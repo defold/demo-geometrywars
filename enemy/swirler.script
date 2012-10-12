@@ -1,0 +1,83 @@
+require "level.level_util"
+
+local color = vmath.vector4(1, 0.2, 0.3, 1)
+local particle_color = vmath.vector4(1, 0.2, 0.3, 1)
+
+local max_speed = 400
+local max_speed_sq = max_speed * max_speed
+local swirl_speed = 600
+local death_duration = 2
+local spawn_duration = 0.8
+local spawn_bob_rate = 5
+local spawn_bob_mag = 0.5
+
+function init(self)
+	self.timer = 0
+	self.velocity = vmath.vector3(0, 0, 0)
+	sprite.set_constant("#sprite", "tint", color)
+	sprite.set_constant("#light_mask", "tint", color)
+	msg.post("/player/player", "request_transform")
+	self.spawning = true
+	self.spawn_timer = spawn_duration
+end
+
+function update(self, dt)
+	if self.spawning then
+		self.spawn_timer = self.spawn_timer - dt
+		if self.spawn_timer < 0 then
+			self.spawning = false
+		else
+			local bounce_t = self.spawn_timer * (spawn_bob_rate / spawn_duration)
+			bounce_t = bounce_t - math.floor(bounce_t)
+			msg.post("#sprite", "set_scale", {scale = vmath.vector3(1 + bounce_t * spawn_bob_mag, 1 + bounce_t * spawn_bob_mag, 1)})
+		end
+		return
+	end
+	msg.post("/player/player", "request_transform")
+	self.timer = self.timer + dt
+	-- locomotion
+	local p = go.get_position()
+	local v0 = vmath.vector3(self.velocity)
+	-- chase
+	if self.target then
+		local delta = self.target - p
+		if vmath.length_sqr(delta) > 0 then
+			local target_vel = vmath.normalize(delta) * max_speed
+			local t = self.timer * 2 * math.pi
+			local swirl_vel = vmath.vector3(math.cos(t), math.sin(t), 0) * swirl_speed
+			self.velocity = swirl_vel + target_vel
+		end
+	end
+	-- boundary
+	if vmath.length_sqr(self.velocity) > max_speed_sq then
+		self.velocity = vmath.normalize(self.velocity) * max_speed
+	end
+	-- integration
+	p = p + 0.5 * (self.velocity + v0) * dt
+	go.set_position(p)
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("transform_response") then
+		self.target = message.world_position
+	elseif message_id == hash("collision_response") then
+		if message.group == hash("bullet") then
+			msg.post("level#script", "add_impact", {magnitude = 100, position = go.get_position()})
+            particlefx.play("#particlefx")
+            particlefx.play("#particlefx_light")
+            particlefx.set_constant("#particlefx", "emitter", "tint", particle_color)
+            particlefx.set_constant("#particlefx_light", "emitter", "tint", particle_color)
+			go.delete()
+		end
+	end
+end
+
+function on_input(self, action_id, action)
+    -- Add input-handling code here
+    -- Remove this function if not needed
+end
+
+function on_reload(self)
+    -- Add reload-handling code here
+    -- Remove this function if not needed
+end
