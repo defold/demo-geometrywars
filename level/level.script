@@ -1,3 +1,5 @@
+require "level.level_util"
+
 local attractor_count = 4
 local attractor_dist = 100
 local attractor_decay_speed = 100
@@ -46,6 +48,9 @@ local function update_attractors(self, dt)
 end
 
 function update(self, dt)
+	-- temp draw level
+	level_draw()
+
 	update_attractors(self, dt)
 	
 	for i,v in ipairs(self.attractors) do

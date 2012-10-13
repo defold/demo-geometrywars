@@ -1,6 +1,6 @@
 components {
   id: "script"
-  component: "/main/spawner.script"
+  component: "/level/spawner.script"
   position {
     x: 0.0
     y: 0.0

@@ -1,21 +1,22 @@
-require "level.level_util"
-
 function init(self)
 	msg.post(nil, "acquire_input_focus")
-end
-
-function update(self, dt)
-	-- temp draw level
-	level_draw()
-end
-
-function on_message(self, message_id, message)
+	msg.post("#stage", "load")
+	msg.post("#stage", "init")
+	msg.post("#stage", "enable")
+	self.paused = false
 end
 
 function on_input(self, action_id, action)
     if action_id == hash("profiler_toggle") and action.pressed then
 		msg.post("@system:", "toggle_profile")
 		return true
+	elseif action_id == hash("pause") and action.pressed then
+		if self.paused then
+			msg.post("#stage", "set_time_step", {factor = 1, mode = 0})
+		else
+			msg.post("#stage", "set_time_step", {factor = 0, mode = 0})
+		end
+		self.paused = not self.paused
 	end
 	return false
 end
