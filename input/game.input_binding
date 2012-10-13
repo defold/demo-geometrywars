@@ -8,11 +8,27 @@ key_trigger {
 }
 key_trigger {
   input: KEY_SPACE
-  action: "profiler_toggle"
+  action: "profiler"
 }
 key_trigger {
   input: KEY_TAB
   action: "pause"
+}
+key_trigger {
+  input: KEY_1
+  action: "render1"
+}
+key_trigger {
+  input: KEY_2
+  action: "render2"
+}
+key_trigger {
+  input: KEY_3
+  action: "render3"
+}
+key_trigger {
+  input: KEY_4
+  action: "render4"
 }
 mouse_trigger {
   input: MOUSE_BUTTON_1

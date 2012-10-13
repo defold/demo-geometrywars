@@ -1,5 +1,5 @@
 script: "/render/default.render_script"
 materials {
   name: "light"
-  material: "/materials/light.material"
+  material: "/materials/quad.material"
 }

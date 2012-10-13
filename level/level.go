@@ -112,7 +112,7 @@ embedded_components {
 embedded_components {
   id: "quad"
   type: "model"
-  data: "mesh: \"/materials/quad.dae\"\nmaterial: \"/materials/light.material\"\n"
+  data: "mesh: \"/materials/quad.dae\"\nmaterial: \"/materials/quad.material\"\n"
   position {
     x: 0.0
     y: 0.0
