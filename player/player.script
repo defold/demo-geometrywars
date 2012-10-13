@@ -1,14 +1,14 @@
 require "level.level_util"
 
-local max_speed = 200
-local max_acc = 1000
+local max_speed = 400
+local max_acc = 3000
 
 local max_target_duration = 3
 local target_margin = 100
 local target_dist = 50
 
-local threat_min_sq_dist = 20 * 20
-local threat_max_sq_dist = 175 * 175
+local threat_min_dist = 100
+local threat_min_sq_dist = threat_min_dist * threat_min_dist
 
 function init(self)
 	msg.post(nil, "acquire_input_focus")
@@ -18,6 +18,7 @@ function init(self)
 	self.max_threat_position = vmath.vector3()
 	self.threat_position = vmath.vector3()
 	self.threats = {}
+	particlefx.play("#tail")
 end
 
 local function draw_cross(p, c)
@@ -49,8 +50,8 @@ local function update_target(self, dt)
 end
 
 local function calc_threat(self_p, threat_p)
-	local t = vmath.length_sqr(threat_p - self_p)
-	return 1 - math.max(0, math.min(1, (t - threat_min_sq_dist)/(threat_max_sq_dist - threat_min_sq_dist)))
+	local len_sq = vmath.length_sqr(threat_p - self_p)
+	return 1 / (1 + math.max(0, len_sq - threat_min_sq_dist))
 end
 
 local function update_threats(self, dt)
@@ -86,7 +87,7 @@ function update(self, dt)
 	local target_dir = vmath.normalize(d)
 	d = self.threat_position - p
 	local threat_dir = vmath.normalize(d)
-	local threat_align = math.max(0, vmath.dot(target_dir, threat_dir))
+	local threat_align = math.min(1, vmath.dot(target_dir, threat_dir) + 1)
 	local weight = threat_align * self.max_threat
 	local dir = vmath.normalize(weight * -threat_dir + (1 - weight) * target_dir)
 	local target_velocity = dir * max_speed
@@ -96,17 +97,16 @@ function update(self, dt)
 	end
 	local v0 = self.velocity
 	self.velocity = self.velocity + acc * dt
-	if vmath.length_sqr(self.velocity) > max_speed * max_speed then
-		self.velocity = max_speed * vmath.normalize(self.velocity)
-	end
+	local v_len_sq = vmath.length_sqr(self.velocity)
 	p = p + 0.5 * (v0 + self.velocity) * dt
 	go.set_position(p)
+	if v_len_sq > 0 then
+		local angle = math.atan2(self.velocity.y, self.velocity.x)
+		go.set_rotation(vmath.quat_rotation_z(angle))
+	end
 	if self.max_threat > 0 then
-		threat_dir = vmath.normalize(self.max_threat_position - p)
-		go.set_rotation(vmath.quat_from_to(vmath.vector3(1, 0, 0), threat_dir))
 		msg.post("cannon#script", "set_target", {target = self.max_threat_position})
 	else
-		go.set_rotation(vmath.quat_from_to(vmath.vector3(1, 0, 0), target_dir))
 		msg.post("cannon#script", "set_target", {target = nil})
 	end
 	self.threat_level = 0
@@ -124,6 +124,8 @@ function on_message(self, message_id, message, sender)
 				-- TODO bump
 			end
 		end
+	elseif message_id == hash("request_transform") then
+		print("TARGET")
 	end
 end
 

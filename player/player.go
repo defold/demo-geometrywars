@@ -13,6 +13,21 @@ components {
     w: 1.0
   }
 }
+components {
+  id: "tail"
+  component: "/player/tail.particlefx"
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+}
 embedded_components {
   id: "body"
   type: "collisionobject"
@@ -32,7 +47,7 @@ embedded_components {
 embedded_components {
   id: "sensor"
   type: "collisionobject"
-  data: "collision_shape: \"\"\ntype: COLLISION_OBJECT_TYPE_TRIGGER\nmass: 0.0\nfriction: 0.1\nrestitution: 0.5\ngroup: \"sensor\"\nmask: \"enemy\"\nmask: \"black_hole\"\nembedded_collision_shape {\n  shapes {\n    shape_type: TYPE_SPHERE\n    position {\n      x: 0.0\n      y: 0.0\n      z: 0.0\n    }\n    rotation {\n      x: 0.0\n      y: 0.0\n      z: 0.0\n      w: 1.0\n    }\n    index: 0\n    count: 1\n  }\n  data: 175.19794\n}\n"
+  data: "collision_shape: \"\"\ntype: COLLISION_OBJECT_TYPE_TRIGGER\nmass: 0.0\nfriction: 0.1\nrestitution: 0.5\ngroup: \"sensor\"\nmask: \"enemy\"\nmask: \"black_hole\"\nembedded_collision_shape {\n  shapes {\n    shape_type: TYPE_SPHERE\n    position {\n      x: 0.0\n      y: 0.0\n      z: 0.0\n    }\n    rotation {\n      x: 0.0\n      y: 0.0\n      z: 0.0\n      w: 1.0\n    }\n    index: 0\n    count: 1\n  }\n  data: 250.0\n}\n"
   position {
     x: 0.0
     y: 0.0
