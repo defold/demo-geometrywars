@@ -10,6 +10,7 @@ local death_duration = 2
 local spawn_duration = 0.8
 local spawn_bob_rate = 5
 local spawn_bob_mag = 0.5
+local rotation_speed = 2 * math.pi / 8
 
 function init(self)
 	self.timer = 0
@@ -23,6 +24,7 @@ function init(self)
 	self.spawn_timer = spawn_duration
 	self.dynamics = dynamics_init()
 	self.velocity = vmath.vector3()
+	self.angle = 0
 end
 
 function update(self, dt)
@@ -60,6 +62,8 @@ function update(self, dt)
 	-- integration
 	p = p + (self.velocity + target_velocity) * dt
 	go.set_position(p)
+	self.angle = self.angle + rotation_speed * dt
+	go.set_rotation(vmath.quat_rotation_z(self.angle))
 end
 
 function on_message(self, message_id, message, sender)
