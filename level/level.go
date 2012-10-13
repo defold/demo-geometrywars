@@ -14,22 +14,6 @@ components {
   }
 }
 embedded_components {
-  id: "bloom"
-  type: "model"
-  data: "mesh: \"/materials/quad.dae\"\nmaterial: \"/materials/bloom.material\"\n"
-  position {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-}
-embedded_components {
   id: "blur"
   type: "model"
   data: "mesh: \"/materials/quad.dae\"\nmaterial: \"/materials/blur.material\"\n"

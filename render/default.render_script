@@ -27,48 +27,42 @@ local function setup_render_targets(self)
                        v_wrap = render.WRAP_CLAMP }
     
 
-    local rt_params = dup_table(template)
-    rt_params.format = render.FORMAT_RGBA
-    local rt_params_depth = dup_table(template)
-    rt_params_depth.format = render.FORMAT_DEPTH
-    local blur_params = dup_table(template)
-    blur_params.format = render.FORMAT_RGB
-    if self.rts then
-    	for k,v in pairs(self.rts) do
-    		render.delete_render_target(v)
+    if self.original_rt then
+    	render.delete_render_target(self.original_rt)
+    end
+    local original_params = dup_table(template)
+    original_params.format = render.FORMAT_RGBA
+    local original_params_depth = dup_table(template)
+    original_params_depth.format = render.FORMAT_DEPTH
+    self.original_rt = render.render_target("original", {[render.BUFFER_COLOR_BIT] = original_params, [render.BUFFER_DEPTH_BIT] = original_params_depth})
+    
+    local post_params = dup_table(template)
+    if self.post_rts then
+    	for k,v in pairs(self.post_rts) do
+    		for k2,v2 in pairs(v) do
+    			render.delete_render_target(v2)
+    		end
     	end
     end
-    if self.blur_rts then
-    	for k,v in pairs(self.blur_rts) do
-    		render.delete_render_target(v)
-    	end
-    end
-    self.rts = {}
-    self.blur_rts = {}
+    self.post_rts = {}
     local width = SIZE
     local height = SIZE / 2
     for i = 1,PASS_COUNT do
-    	if i > 1 then
-    		rt_params_depth = nil
-    		rt_params.format = render.FORMAT_RGB
-    		rt_params.width = width
-    		rt_params.height = height
-		    blur_params.width = width
-		    blur_params.height = height
-    		width = width / 2
-    		height = height / 2
-    	end
-		local rt = render.render_target("rt" .. i, {[render.BUFFER_COLOR_BIT] = rt_params, [render.BUFFER_DEPTH_BIT] = rt_params_depth})
-    	table.insert(self.rts, rt)
-    	rt = render.render_target("blur_rt" .. i, {[render.BUFFER_COLOR_BIT] = blur_params})
-    	table.insert(self.blur_rts, rt)
-    end
+    	local rts = {}
+	    post_params.width = width
+	    post_params.height = height
+		width = width / 2
+		height = height / 2
+    	for j = 1, 2 do
+			local rt = render.render_target("rt" .. i, {[render.BUFFER_COLOR_BIT] = post_params})
+			table.insert(rts, rt)
+		end
+		table.insert(self.post_rts, rts)
+	end
        
     local light_params = dup_table(template)
-    -- TODO: RGB?
-    light_params.width = LIGHT_SIZE
-    light_params.height = LIGHT_SIZE / 2
-    light_params.format = render.FORMAT_RGBA
+    light_params.width = SIZE
+    light_params.height = SIZE / 2
     if self.light_rt then
     	render.delete_render_target(self.light_rt)
     end
@@ -84,7 +78,6 @@ function init(self)
     self.particle_pred = render.predicate({"particle"})
     self.particle_light_pred = render.predicate({"particle_light"})
     self.grid_pred = render.predicate({"grid"})
-    self.bloom_pred = render.predicate({"bloom"})
     self.blur_pred = render.predicate({"blur"})
     self.light_pred = render.predicate({"light"})
     self.light_mask_pred = render.predicate({"light_mask"})
@@ -101,21 +94,25 @@ function init(self)
     setup_render_targets(self)
     
     self.postfx_constants = {}
-    local z = 5/16
-    local w = 6/16
+    local offset1 = 3
+    local offset2 = 1 + 6/21
+    local kernel_total = 1 + 6 + 15 + 20 + 15 + 6 + 1
+    local coefficients = vmath.vector4(1/kernel_total, (6+15)/kernel_total, 20/kernel_total, 0)
     for pass = 1, PASS_COUNT do
     	for ping = 1, 2 do
 	    	local constants = render.constant_buffer()
-	    	local width = render.get_texture_width(self.blur_rts[pass], render.BUFFER_COLOR_BIT)
-	    	local height = render.get_texture_width(self.blur_rts[pass], render.BUFFER_COLOR_BIT)
-	    	local x = 0
-	    	local y = 0
+	    	local width = render.get_texture_width(self.post_rts[pass][1], render.BUFFER_COLOR_BIT)
+	    	local height = render.get_texture_width(self.post_rts[pass][1], render.BUFFER_COLOR_BIT)
+	    	local offsets = vmath.vector4()
 	    	if ping == 1 then
-	    		x = 1.2 / width
+	    		offsets.x = offset1/width
+	    		offsets.z = offset2/width
 	    	else
-	    		y = 1.2 / height
+	    		offsets.y = offset1/height
+	    		offsets.w = offset2/height
 	    	end
-	    	constants.params = vmath.vector4(x, y, z, w)
+	    	constants.offsets = offsets
+	    	constants.coefficients = coefficients
 	    	table.insert(self.postfx_constants, constants)
 	    end
 	end
@@ -161,7 +158,7 @@ function update(self)
     	return
     end
 
-    render.enable_render_target(self.rts[1])
+    render.enable_render_target(self.original_rt)
     render.clear({[render.BUFFER_COLOR_BIT] = self.clear_color, [render.BUFFER_DEPTH_BIT] = 1})
 
     render.set_viewport(0, 0, render.get_window_width(), render.get_window_height())
@@ -179,27 +176,30 @@ function update(self)
     
     render.set_view(vmath.matrix4())
     render.set_projection(vmath.matrix4())
-    render.enable_material("light")
     render.enable_texture(0, self.light_rt, render.BUFFER_COLOR_BIT)
     render.set_blend_func(render.BLEND_ZERO, render.BLEND_SRC_COLOR)
     
     render.draw(self.quad_pred)
     render.disable_texture(0, self.light_rt)
-    render.disable_material()
     render.set_view(self.view)
     render.set_projection(vmath.matrix4_orthographic(0, render.get_width(), 0, render.get_height(), -1000, 1000))
     
     render.draw(self.tile_pred)
     render.draw(self.particle_pred)
-    render.disable_render_target(self.rts[1])
-    
-    for i = 1, PASS_COUNT-1 do
-    	blit(self, self.rts[i], self.rts[i+1])
-    end
+    render.disable_render_target(self.original_rt)
     
     if self.render_mode == RM_NO_POSTFX then
-    	blit(self, self.rts[1])
+    	blit(self, self.original_rt)
     	return
+    end
+    
+    local source = self.original_rt
+    local target = self.post_rts[1][1]
+	blit(self, source, target)
+    for i = 1, PASS_COUNT-1 do
+    	source = target
+    	target = self.post_rts[i+1][1]
+		blit(self, source, target)
     end
     
     -- postfx
@@ -209,15 +209,15 @@ function update(self)
     render.set_projection(vmath.matrix4())
    
    	for i = 1, PASS_COUNT do
-   		local source = self.rts[i]
-   		local target = self.blur_rts[i]
+   		local source = self.post_rts[i][1]
+   		local target = self.post_rts[i][2]
 	    local width = render.get_texture_width(target, render.BUFFER_COLOR_BIT)
 	    local height = render.get_texture_height(target, render.BUFFER_COLOR_BIT)
 	    render.set_viewport(0, 0, width, height)
 	    for j=1,2 do
 	    	if j == 2 then
-	    		source = self.blur_rts[i]
-	    		target = self.rts[i]
+	    		source = self.post_rts[i][2]
+	    		target = self.post_rts[i][1]
 	    	end
 		    render.enable_render_target(target)
 		    render.enable_texture(0, source, render.BUFFER_COLOR_BIT)
@@ -229,26 +229,28 @@ function update(self)
 	end
     
     if self.render_mode == RM_BLUR then
-    	blit(self, self.blur_rts[1])
+    	blit(self, self.post_rts[1][1])
     	return
     end
    
     render.set_viewport(0, 0, render.get_window_width(), render.get_window_height())
     render.clear({[render.BUFFER_COLOR_BIT] = self.clear_color, [render.BUFFER_DEPTH_BIT] = 1})
 
-    render.enable_texture(0, self.rts[1], render.BUFFER_COLOR_BIT)    
-    render.enable_texture(1, self.rts[2], render.BUFFER_COLOR_BIT)    
-    render.enable_texture(2, self.rts[3], render.BUFFER_COLOR_BIT)    
-    render.enable_texture(3, self.rts[4], render.BUFFER_COLOR_BIT)
+    render.enable_texture(0, self.original_rt, render.BUFFER_COLOR_BIT)    
+    render.enable_texture(1, self.post_rts[1][1], render.BUFFER_COLOR_BIT)    
+    render.enable_texture(2, self.post_rts[2][1], render.BUFFER_COLOR_BIT)    
+    render.enable_texture(3, self.post_rts[3][1], render.BUFFER_COLOR_BIT)    
+    render.enable_texture(4, self.post_rts[4][1], render.BUFFER_COLOR_BIT)
     
-    render.enable_material("combine")
+    render.enable_material("glow")
     render.draw(self.quad_pred)
     render.disable_material()
 
-    render.disable_texture(0, self.blur_rts[1])    
-    render.disable_texture(1, self.blur_rts[2])    
-    render.disable_texture(2, self.blur_rts[3])    
-    render.disable_texture(3, self.blur_rts[4])
+    render.disable_texture(0, self.original_rt)
+    render.disable_texture(1, self.post_rts[1][1])
+    render.disable_texture(2, self.post_rts[2][1])
+    render.disable_texture(3, self.post_rts[3][1])
+    render.disable_texture(4, self.post_rts[4][1])
     
     render.set_view(vmath.matrix4())
     render.set_projection(vmath.matrix4_orthographic(0, render.get_window_width(), 0, render.get_window_height(), -1, 1))

@@ -1,9 +1,5 @@
 script: "/render/default.render_script"
 materials {
-  name: "light"
-  material: "/materials/light.material"
-}
-materials {
-  name: "combine"
-  material: "/materials/combine.material"
+  name: "glow"
+  material: "/materials/glow.material"
 }

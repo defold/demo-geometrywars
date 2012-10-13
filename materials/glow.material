@@ -1,7 +1,7 @@
 name: "Combine"
 tags: "combine"
 vertex_program: "/materials/pass.vp"
-fragment_program: "/materials/combine.fp"
+fragment_program: "/materials/glow.fp"
 textures: "TEXTURE0"
 textures: "TEXTURE1"
 textures: "TEXTURE2"

@@ -3,13 +3,11 @@ tags: "blur"
 vertex_program: "/materials/pass.vp"
 fragment_program: "/materials/blur.fp"
 fragment_constants {
-  name: "params"
+  name: "offsets"
   type: CONSTANT_TYPE_USER
-  value {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
+}
+fragment_constants {
+  name: "coefficients"
+  type: CONSTANT_TYPE_USER
 }
 textures: "T"

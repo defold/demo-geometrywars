@@ -1,6 +1,0 @@
-name: "Bloom"
-tags: "bloom"
-vertex_program: "/materials/pass.vp"
-fragment_program: "/materials/bloom.fp"
-textures: "BLUR_TEX"
-textures: "TEX"
