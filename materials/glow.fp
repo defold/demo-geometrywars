@@ -21,5 +21,5 @@ void main()
     vec4 color = texture2D(original, var_texcoord0.xy);
     vec4 light = texture2D(light, var_texcoord0.xy);
     gl_FragColor = color + glow_rate * clamp(sum_post, vec4(0.0), vec4(1.0)) + light * light_rate;
-    gl_FragColor.w = 1.0;          
+    gl_FragColor.w = clamp(gl_FragColor.r + gl_FragColor.g + gl_FragColor.b, 0.0, 1.0);
 }
