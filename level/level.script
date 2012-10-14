@@ -1,4 +1,5 @@
 require "level.level_util"
+require "shared.util"
 
 local attractor_count = 4
 local attractor_dist = 100
@@ -8,6 +9,8 @@ function init(self)
 	self.phase = 0
 	self.impacts = {}
 	self.attractors = {}
+	self.color_hue = 0
+	self.color = vmath.vector4()
 end
 
 local function update_attractors(self, dt)
@@ -64,12 +67,29 @@ function update(self, dt)
 	end
 	
 	self.phase = self.phase + dt * 2
+	
+	self.color_hue = self.color_hue + dt * 360 / 8
+	if self.color_hue > 360 then
+		self.color_hue = self.color_hue - 360
+	end
+	self.color = hsl(self.color_hue, 1, 0.7)
+end
+
+local function add_impact(self, magnitude, position)
+		-- TODO fix this!
+	local offset = vmath.vector3(100, 60, 0)
+	table.insert(self.impacts, {magnitude, position - offset})
 end
 
 function on_message(self, message_id, message, sender)
 	if message_id == hash("add_impact") then
-		-- TODO fix this!
-		local offset = vmath.vector3(100, 60, 0)
-		table.insert(self.impacts, {message.magnitude, message.position - offset})
+		add_impact(self, message.magnitude, message.position)
+	elseif message_id == hash("enemy_dead") then
+		add_impact(self, message.value, message.position)
+		local particle = sender
+		particle.fragment = hash("particlefx")
+        particlefx.set_constant(particle, "emitter", "tint", self.color)
+		particle.fragment = hash("particlefx_light")
+        particlefx.set_constant(particle, "emitter", "tint", self.color)
 	end
 end
