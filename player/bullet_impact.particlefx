@@ -22,10 +22,10 @@ emitters {
   max_particle_count: 8
   type: EMITTER_TYPE_CONE
   properties {
-    key: EMITTER_KEY_SPAWN_DELAY
+    key: EMITTER_KEY_SPAWN_RATE
     points {
       x: 0.0
-      y: 0.0
+      y: 50
       t_x: 1.0
       t_y: 0.0
     }
