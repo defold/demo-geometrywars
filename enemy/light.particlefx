@@ -18,7 +18,7 @@ emitters {
   animation: "anim"
   material: "/materials/particlefx_light.material"
   blend_mode: BLEND_MODE_ADD_ALPHA
-  particle_direction: PARTICLE_DIRECTION_NONE
+  particle_orientation: PARTICLE_ORIENTATION_DEFAULT
   max_particle_count: 128
   type: EMITTER_TYPE_SPHERE
   properties {

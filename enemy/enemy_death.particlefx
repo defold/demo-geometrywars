@@ -18,7 +18,7 @@ emitters {
   animation: "large"
   material: "/builtins/materials/particlefx.material"
   blend_mode: BLEND_MODE_ADD_ALPHA
-  particle_direction: PARTICLE_DIRECTION_INITIAL_DIRECTION
+  particle_orientation: PARTICLE_ORIENTATION_INITIAL_DIRECTION
   inherit_velocity: 0.0
   max_particle_count: 256
   type: EMITTER_TYPE_SPHERE
@@ -267,7 +267,7 @@ emitters {
   animation: "anim"
   material: "/builtins/materials/particlefx.material"
   blend_mode: BLEND_MODE_ADD_ALPHA
-  particle_direction: PARTICLE_DIRECTION_NONE
+  particle_orientation: PARTICLE_ORIENTATION_DEFAULT
   inherit_velocity: 0.0
   max_particle_count: 32
   type: EMITTER_TYPE_SPHERE

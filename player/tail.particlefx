@@ -18,7 +18,7 @@ emitters {
   animation: "small"
   material: "/builtins/materials/particlefx.material"
   blend_mode: BLEND_MODE_ADD_ALPHA
-  particle_direction: PARTICLE_DIRECTION_NONE
+  particle_orientation: PARTICLE_ORIENTATION_DEFAULT
   inherit_velocity: 0
   max_particle_count: 128
   type: EMITTER_TYPE_CONE
@@ -349,7 +349,7 @@ emitters {
   animation: "anim"
   material: "/materials/particlefx_light.material"
   blend_mode: BLEND_MODE_ADD_ALPHA
-  particle_direction: PARTICLE_DIRECTION_NONE
+  particle_orientation: PARTICLE_ORIENTATION_DEFAULT
   inherit_velocity: 0
   max_particle_count: 60
   type: EMITTER_TYPE_CONE

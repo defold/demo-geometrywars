@@ -18,7 +18,7 @@ emitters {
   animation: "small"
   material: "/builtins/materials/particlefx.material"
   blend_mode: BLEND_MODE_ADD_ALPHA
-  particle_direction: PARTICLE_DIRECTION_INITIAL_DIRECTION
+  particle_orientation: PARTICLE_ORIENTATION_INITIAL_DIRECTION
   max_particle_count: 8
   type: EMITTER_TYPE_CONE
   properties {
