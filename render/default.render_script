@@ -110,8 +110,8 @@ function init(self)
     for pass = 1, PASS_COUNT do
     	for ping = 1, 2 do
 	    	local constants = render.constant_buffer()
-	    	local width = render.get_texture_width(self.post_rts[pass][1], render.BUFFER_COLOR_BIT)
-	    	local height = render.get_texture_width(self.post_rts[pass][1], render.BUFFER_COLOR_BIT)
+	    	local width = render.get_render_target_width(self.post_rts[pass][1], render.BUFFER_COLOR_BIT)
+	    	local height = render.get_render_target_height(self.post_rts[pass][1], render.BUFFER_COLOR_BIT)
 	    	local offsets = vmath.vector4()
 	    	if ping == 1 then
 	    		offsets.x = offset1/width
@@ -134,8 +134,8 @@ function blit(self, source, target)
     local width = render.get_window_width()
     local height = render.get_window_height()
     if target then
-    	width = render.get_texture_width(target, render.BUFFER_COLOR_BIT)
-    	height = render.get_texture_height(target, render.BUFFER_COLOR_BIT)
+    	width = render.get_render_target_width(target, render.BUFFER_COLOR_BIT)
+    	height = render.get_render_target_height(target, render.BUFFER_COLOR_BIT)
     	render.enable_render_target(target)
     end
     render.set_viewport(0, 0, width, height)
@@ -168,8 +168,8 @@ local function post_process(self, rt, background)
    	for i = 1, PASS_COUNT do
    		local source = self.post_rts[i][1]
    		local target = self.post_rts[i][2]
-	    local width = render.get_texture_width(target, render.BUFFER_COLOR_BIT)
-	    local height = render.get_texture_height(target, render.BUFFER_COLOR_BIT)
+	    local width = render.get_render_target_width(target, render.BUFFER_COLOR_BIT)
+	    local height = render.get_render_target_height(target, render.BUFFER_COLOR_BIT)
 	    render.set_viewport(0, 0, width, height)
 	    for j=1,2 do
 	    	if j == 2 then
