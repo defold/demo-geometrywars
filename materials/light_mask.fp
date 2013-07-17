@@ -7,6 +7,7 @@ uniform vec4 tint;
 void main()
 {
     float c = texture2D(DIFFUSE_TEXTURE, var_texcoord0.xy).x;
-    tint.xyz *= tint.w;
-    gl_FragColor = vec4(c, c, c, c) * tint * 0.3;
+    vec4 t = tint;
+    t.xyz *= t.w;
+    gl_FragColor = vec4(c, c, c, c) * t * 0.3;
 }
