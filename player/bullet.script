@@ -1,6 +1,6 @@
 require "shared.dynamics"
 
-local speed = 600
+local speed = 800
 
 function init(self)
 	self.velocity = vmath.rotate(go.get_rotation(), vmath.vector3(1, 0, 0)) * speed

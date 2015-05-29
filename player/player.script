@@ -1,7 +1,6 @@
 require "level.level_util"
 
 local max_speed = 400
-local max_acc = 3000
 
 local max_target_duration = 3
 local target_margin = 100
@@ -90,13 +89,11 @@ function update(self, dt)
 	local threat_align = math.min(1, vmath.dot(target_dir, threat_dir) + 1)
 	local weight = threat_align * self.max_threat
 	local dir = vmath.normalize(weight * -threat_dir + (1 - weight) * target_dir)
-	local target_velocity = dir * max_speed
-	local acc = target_velocity - self.velocity
-	if vmath.length_sqr(acc) > 0 then
-		acc = max_acc * vmath.normalize(acc)
+	local current_dir = vmath.rotate(go.get_rotation(), vmath.vector3(1, 0, 0))
+	if vmath.length_sqr(current_dir) > 0 and vmath.length_sqr(dir) > 0 then
+		self.velocity = vmath.slerp(8 * dt, current_dir, dir) * max_speed
 	end
 	local v0 = self.velocity
-	self.velocity = self.velocity + acc * dt
 	local v_len_sq = vmath.length_sqr(self.velocity)
 	p = p + 0.5 * (v0 + self.velocity) * dt
 	go.set_position(p)

@@ -1,4 +1,4 @@
-local fire_rate = 5
+local fire_rate = 10
 
 function init(self)
 	self.timer = 0
