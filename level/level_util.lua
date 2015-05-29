@@ -16,6 +16,15 @@ function level_get_aabb()
 	return level_min, level_max
 end
 
+function level_clamp(p)
+	local min, max = level_get_aabb()
+	if p.x < min.x then p.x = min.x end
+	if p.y < min.y then p.y = min.y end
+	if p.x > max.x then p.x = max.x end
+	if p.y > max.y then p.y = max.y end
+	return p
+end
+
 function draw_box(min, max)
 	local c = vmath.vector4(1, 1, 1, 1)
 	msg.post("@render:", "draw_line", { start_point = vmath.vector3(min.x, min.y, 0), end_point = vmath.vector3(max.x, min.y, 0), color = c } )

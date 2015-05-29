@@ -57,7 +57,7 @@ function update(self, dt)
 	self.velocity = dynamics_update(self.dynamics, self.velocity, dt)
 	-- integration
 	p = p + 0.5 * (self.velocity + v0) * dt
-	go.set_position(p)
+	go.set_position(level_clamp(p))
 	-- bouncy sprite
 	local bounce_t = math.sin(self.timer * sprite_bounce_freq)
 	msg.post("#sprite", "set_scale", {scale = vmath.vector3(1 + bounce_t * sprite_bounce_factor, 1 + (1 - bounce_t) * sprite_bounce_factor, 1)})

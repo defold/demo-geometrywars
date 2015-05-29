@@ -1,3 +1,6 @@
+local roaming = require("enemy.roaming")
+require("level.level_util")
+
 local sensor_radius = 250
 local min_force = 300
 local max_force = 1000
@@ -14,7 +17,9 @@ local max_scale = 1.5
 local min_tint = vmath.vector4(1, 0.4, 0, 0.5)
 local max_tint = vmath.vector4(1.0, 0.8, 0, 0.8)
 local min_angle_speed = 0 --math.pi
-local max_angle_speed = 0 --2 * math.pi
+local max_angle_speed = 2 * math.pi
+
+local max_speed = 20
 
 function init(self)
     self.dormant = true
@@ -23,6 +28,7 @@ function init(self)
     self.power = 0
     self.timer = 0
     self.angle = 0
+    self.roaming = roaming.init(max_speed, max_angle_speed)
 end
 
 function update(self, dt)
@@ -47,6 +53,10 @@ function update(self, dt)
 	local angle_speed = min_angle_speed + self.power * (max_angle_speed - min_angle_speed)
 	self.angle = self.angle + angle_speed * dt
 	go.set_rotation(vmath.quat_rotation_z(self.angle))
+	local velocity = roaming.update(self.roaming, dt)
+	local p = go.get_position()
+	p = p + velocity * dt
+	go.set_position(level_clamp(p))
 end
 
 function on_message(self, message_id, message, sender)

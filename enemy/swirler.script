@@ -59,7 +59,7 @@ function update(self, dt)
 	self.velocity = dynamics_update(self.dynamics, self.velocity, dt)
 	-- integration
 	p = p + (self.velocity + v) * dt
-	go.set_position(p)
+	go.set_position(level_clamp(p))
 end
 
 function on_message(self, message_id, message, sender)
