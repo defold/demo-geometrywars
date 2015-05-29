@@ -96,6 +96,11 @@ function update(self, dt)
 	local v0 = self.velocity
 	local v_len_sq = vmath.length_sqr(self.velocity)
 	p = p + 0.5 * (v0 + self.velocity) * dt
+	local min, max = level_get_aabb()
+	if p.x < min.x then p.x = min.x end
+	if p.y < min.y then p.y = min.y end
+	if p.x > max.x then p.x = max.x end
+	if p.y > max.y then p.y = max.y end
 	go.set_position(p)
 	if v_len_sq > 0 then
 		local angle = math.atan2(self.velocity.y, self.velocity.x)
