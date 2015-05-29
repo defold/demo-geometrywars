@@ -46,7 +46,9 @@ components {
 embedded_components {
   id: "blur"
   type: "model"
-  data: "mesh: \"/materials/quad.dae\"\nmaterial: \"/materials/blur.material\"\n"
+  data: "mesh: \"/materials/quad.dae\"\n"
+  "material: \"/materials/blur.material\"\n"
+  ""
   position {
     x: 0.0
     y: 0.0
@@ -62,7 +64,97 @@ embedded_components {
 embedded_components {
   id: "collisionobject"
   type: "collisionobject"
-  data: "collision_shape: \"\"\ntype: COLLISION_OBJECT_TYPE_STATIC\nmass: 0.0\nfriction: 0.1\nrestitution: 0.5\ngroup: \"level\"\nmask: \"player\"\nmask: \"enemy\"\nmask: \"bullet\"\nembedded_collision_shape {\n  shapes {\n    shape_type: TYPE_BOX\n    position {\n      x: 45.0\n      y: 360.0\n      z: 0.0\n    }\n    rotation {\n      x: 0.0\n      y: 0.0\n      z: 0.0\n      w: 1.0\n    }\n    index: 0\n    count: 3\n  }\n  shapes {\n    shape_type: TYPE_BOX\n    position {\n      x: 1235.0\n      y: 360.0\n      z: 0.0\n    }\n    rotation {\n      x: 0.0\n      y: 0.0\n      z: 0.0\n      w: 1.0\n    }\n    index: 3\n    count: 3\n  }\n  shapes {\n    shape_type: TYPE_BOX\n    position {\n      x: 640.0\n      y: 45.0\n      z: 0.0\n    }\n    rotation {\n      x: 0.0\n      y: 0.0\n      z: 0.0\n      w: 1.0\n    }\n    index: 6\n    count: 3\n  }\n  shapes {\n    shape_type: TYPE_BOX\n    position {\n      x: 640.0\n      y: 675.0\n      z: 0.0\n    }\n    rotation {\n      x: 0.0\n      y: 0.0\n      z: 0.0\n      w: 1.0\n    }\n    index: 9\n    count: 3\n  }\n  data: 5.0\n  data: 320.0\n  data: 10.0\n  data: 5.0\n  data: 320.0\n  data: 10.0\n  data: 600.0\n  data: 5.0\n  data: 10.0\n  data: 600.0\n  data: 5.0\n  data: 10.0\n}\n"
+  data: "collision_shape: \"\"\n"
+  "type: COLLISION_OBJECT_TYPE_STATIC\n"
+  "mass: 0.0\n"
+  "friction: 0.1\n"
+  "restitution: 0.5\n"
+  "group: \"level\"\n"
+  "mask: \"player\"\n"
+  "mask: \"enemy\"\n"
+  "mask: \"bullet\"\n"
+  "embedded_collision_shape {\n"
+  "  shapes {\n"
+  "    shape_type: TYPE_BOX\n"
+  "    position {\n"
+  "      x: 1.187844\n"
+  "      y: 314.62314\n"
+  "      z: 0.0\n"
+  "    }\n"
+  "    rotation {\n"
+  "      x: 0.0\n"
+  "      y: 0.0\n"
+  "      z: 0.0\n"
+  "      w: 1.0\n"
+  "    }\n"
+  "    index: 0\n"
+  "    count: 3\n"
+  "  }\n"
+  "  shapes {\n"
+  "    shape_type: TYPE_BOX\n"
+  "    position {\n"
+  "      x: 1191.1879\n"
+  "      y: 314.62314\n"
+  "      z: 0.0\n"
+  "    }\n"
+  "    rotation {\n"
+  "      x: 0.0\n"
+  "      y: 0.0\n"
+  "      z: 0.0\n"
+  "      w: 1.0\n"
+  "    }\n"
+  "    index: 3\n"
+  "    count: 3\n"
+  "  }\n"
+  "  shapes {\n"
+  "    shape_type: TYPE_BOX\n"
+  "    position {\n"
+  "      x: 596.18787\n"
+  "      y: -0.37687582\n"
+  "      z: 0.0\n"
+  "    }\n"
+  "    rotation {\n"
+  "      x: 0.0\n"
+  "      y: 0.0\n"
+  "      z: 0.0\n"
+  "      w: 1.0\n"
+  "    }\n"
+  "    index: 6\n"
+  "    count: 3\n"
+  "  }\n"
+  "  shapes {\n"
+  "    shape_type: TYPE_BOX\n"
+  "    position {\n"
+  "      x: 596.18787\n"
+  "      y: 629.6231\n"
+  "      z: 0.0\n"
+  "    }\n"
+  "    rotation {\n"
+  "      x: 0.0\n"
+  "      y: 0.0\n"
+  "      z: 0.0\n"
+  "      w: 1.0\n"
+  "    }\n"
+  "    index: 9\n"
+  "    count: 3\n"
+  "  }\n"
+  "  data: 5.0\n"
+  "  data: 320.0\n"
+  "  data: 10.0\n"
+  "  data: 5.0\n"
+  "  data: 320.0\n"
+  "  data: 10.0\n"
+  "  data: 600.0\n"
+  "  data: 5.0\n"
+  "  data: 10.0\n"
+  "  data: 600.0\n"
+  "  data: 5.0\n"
+  "  data: 10.0\n"
+  "}\n"
+  "linear_damping: 0.0\n"
+  "angular_damping: 0.0\n"
+  "locked_rotation: false\n"
+  ""
   position {
     x: 0.0
     y: 0.0
@@ -78,10 +170,13 @@ embedded_components {
 embedded_components {
   id: "modelx"
   type: "model"
-  data: "mesh: \"/level/lines_x.dae\"\nmaterial: \"/level/grid_x.material\"\ntextures: \"/level/line.png\"\n"
+  data: "mesh: \"/level/lines_x.dae\"\n"
+  "material: \"/level/grid_x.material\"\n"
+  "textures: \"/level/line.png\"\n"
+  ""
   position {
-    x: 100.0
-    y: 60.0
+    x: 0.0
+    y: 0.0
     z: 0.0
   }
   rotation {
@@ -94,10 +189,13 @@ embedded_components {
 embedded_components {
   id: "modely"
   type: "model"
-  data: "mesh: \"/level/lines_y.dae\"\nmaterial: \"/level/grid_y.material\"\ntextures: \"/level/line.png\"\n"
+  data: "mesh: \"/level/lines_y.dae\"\n"
+  "material: \"/level/grid_y.material\"\n"
+  "textures: \"/level/line.png\"\n"
+  ""
   position {
-    x: 100.0
-    y: 60.0
+    x: 0.0
+    y: 0.0
     z: 0.0
   }
   rotation {
@@ -110,7 +208,11 @@ embedded_components {
 embedded_components {
   id: "music"
   type: "sound"
-  data: "sound: \"/level/overloadmaster.ogg\"\nlooping: 0\n"
+  data: "sound: \"/level/overloadmaster.ogg\"\n"
+  "looping: 0\n"
+  "group: \"master\"\n"
+  "gain: 1.0\n"
+  ""
   position {
     x: 0.0
     y: 0.0
@@ -126,7 +228,9 @@ embedded_components {
 embedded_components {
   id: "quad"
   type: "model"
-  data: "mesh: \"/materials/quad.dae\"\nmaterial: \"/materials/quad.material\"\n"
+  data: "mesh: \"/materials/quad.dae\"\n"
+  "material: \"/materials/quad.material\"\n"
+  ""
   position {
     x: 0.0
     y: 0.0
