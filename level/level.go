@@ -168,29 +168,10 @@ embedded_components {
   }
 }
 embedded_components {
-  id: "modelx"
+  id: "model"
   type: "model"
-  data: "mesh: \"/level/lines_x.dae\"\n"
-  "material: \"/level/grid_x.material\"\n"
-  "textures: \"/level/line.png\"\n"
-  ""
-  position {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-}
-embedded_components {
-  id: "modely"
-  type: "model"
-  data: "mesh: \"/level/lines_y.dae\"\n"
-  "material: \"/level/grid_y.material\"\n"
+  data: "mesh: \"/level/grid5.dae\"\n"
+  "material: \"/level/grid.material\"\n"
   "textures: \"/level/line.png\"\n"
   ""
   position {

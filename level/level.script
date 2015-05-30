@@ -3,7 +3,8 @@ require "shared.util"
 
 local attractor_count = 4
 local attractor_dist = 100
-local attractor_decay_speed = 100
+local attractor_dist_sq = attractor_dist * attractor_dist
+local attractor_decay_speed = 5
 
 function init(self)
 	self.phase = 0
@@ -11,23 +12,27 @@ function init(self)
 	self.attractors = {}
 	self.color_hue = 0
 	self.color = vmath.vector4()
+	self.timer = 0
 end
 
 local function update_attractors(self, dt)
 	for i,v in ipairs(self.impacts) do
+		local mag = v[1]
 		local imp_p = v[2]
 		local found = false
 		for j,u in ipairs(self.attractors) do
 			local att_p = u[3]
-			if vmath.length_sqr(att_p - imp_p) < attractor_dist * attractor_dist then
+			if vmath.length_sqr(att_p - imp_p) < attractor_dist_sq then
 				u[1] = 0
-				u[2] = math.max(v[1], u[2] + 0.1 * v[1])
+				u[2] = u[2] + 0.1 * v[1]
+				u[2] = math.min(2.0, u[2])
+				u[2] = math.max(-150.0, u[2])
 				u[3] = att_p + 0.5 * (imp_p - att_p)
 				found = true
 			end
 		end
 		if not found and #self.attractors < attractor_count then
-			table.insert(self.attractors, {0, v[1], v[2]})
+			table.insert(self.attractors, {0, mag, imp_p})
 		end
 	end
 	self.impacts = {}
@@ -37,33 +42,49 @@ local function update_attractors(self, dt)
 		local v = self.attractors[i]
 		local t = v[1]
 		local m = v[2]
-		local p = v[3]
-		t = t + dt * attractor_decay_speed
-		if t > m then
+		local decay = -attractor_decay_speed * dt
+		if m < 0 then
+			decay = -decay
+		end
+		m = m + decay
+		if math.abs(m) <= decay then
 			table.remove(self.attractors, i)
 			count = count - 1
 		else
-			v[1] = t
+			v[1] = t + dt
+			v[2] = m
 			self.attractors[i] = v
 			i = i + 1
 		end
 	end
 end
 
+local function send_attractor(i, p, f)
+	local p = p * (1.0 / 1.3)
+	msg.post("#model", "set_constant", { name_hash = hash("attractor" .. i), value = vmath.vector4(p.x, p.y, 0, f)})
+end
+
+local function clear_attractor(i)
+	msg.post("#model", "set_constant", { name_hash = hash("attractor" .. i), value = vmath.vector4(0, 0, 0, 0)})
+end
+
 function update(self, dt)
+	self.timer = self.timer + dt
 	-- temp draw level
 	--level_draw()
 
 	update_attractors(self, dt)
-	
+	--pprint(self.attractors)
 	for i,v in ipairs(self.attractors) do
 		local t = v[1]
 		local m = v[2]
 		local p = v[3]
 		local f = (1 - t/m)
-		local f = -100.0 * math.sin(t * 0.1) * m * f * f
-		msg.post("#modelx", "set_constant", { name_hash = hash("attractor" .. i), value = vmath.vector4(p.x, p.y, 0, f) })
-        msg.post("#modely", "set_constant", { name_hash = hash("attractor" .. i), value = vmath.vector4(p.x, p.y, 0, f) })
+		local f = math.cos(t * 20) * m
+		send_attractor(i, p, f)
+	end
+	for i=(#self.attractors+1),(attractor_count - #self.attractors) do
+		clear_attractor(i)
 	end
 	
 	self.phase = self.phase + dt * 2
@@ -73,19 +94,28 @@ function update(self, dt)
 		self.color_hue = self.color_hue - 360
 	end
 	self.color = hsl(self.color_hue, 1, 0.7)
+	--[[
+	if self.temp then
+		send_attractor(1, self.temp, -0.1)
+	end
+	--]]
 end
 
 local function add_impact(self, magnitude, position)
-		-- TODO fix this!
-	local offset = vmath.vector3(100, 60, 0)
-	table.insert(self.impacts, {magnitude, position - offset})
+	table.insert(self.impacts, {magnitude, position})
 end
 
 function on_message(self, message_id, message, sender)
 	if message_id == hash("add_impact") then
 		add_impact(self, message.magnitude, message.position)
+		--send_attractor(1, message.position, message.magnitude)
+		--[[
+		local p = message.position
+		msg.post("#model", "set_constant", { name_hash = hash("attractor1"), value = vmath.vector4(p.x, p.y, 0, 1) })
+		--]]
+		self.temp = message.position
 	elseif message_id == hash("enemy_dead") then
-		add_impact(self, message.value, message.position)
+		--add_impact(self, message.value * 0.02, message.position)
 		local particle = sender
 		particle.fragment = hash("particlefx")
         particlefx.set_constant(particle, "emitter", "tint", self.color)

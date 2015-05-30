@@ -32,7 +32,7 @@ key_trigger {
 }
 mouse_trigger {
   input: MOUSE_BUTTON_1
-  action: "click"
+  action: "touch"
 }
 gamepad_trigger {
   input: GAMEPAD_LPAD_UP

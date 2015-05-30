@@ -13,15 +13,13 @@ attribute vec2 texcoord0;
 
 vec3 calc_attractor(vec4 attractor, vec3 pos)
 {
-	vec3 dir =  attractor.xyz - position;
-	float distSq = dot(dir, dir);
-	distSq = max(20.0 * 20.0, distSq);
-//	float power =  (1.0 / (distSq * distSq)) * attractor.w * 5600.0;
-	float power =  (1.0 / (distSq)) * attractor.w * 5.0;
-	power = min(0.6, power);
-	power = max(-0.5, power);
-	
-	return dir * power;
+	vec3 dir = attractor.xyz - pos;
+	float mag = attractor.w * -500.0;
+	float dist_sq = dot(dir, dir);
+	dist_sq = max(100.0, dist_sq);
+	float power = (1.0 / dist_sq) * mag;
+	power = min(1.0, power);
+	return power * dir;
 }
 
 void main()
@@ -31,7 +29,7 @@ void main()
 	pos += calc_attractor(attractor2, position);
 	pos += calc_attractor(attractor3, position);
 	pos += calc_attractor(attractor4, position);
-	 
+	pos = (position.x <= 1.5 || position.x > 1050.0 || position.y <= 1.5 || position.y > 580.0) ? position : pos;
     mat4 mvp = view_proj * world;
     gl_Position = mvp * vec4(pos.x, pos.y, pos.z, 1);
     var_texcoord0 = texcoord0;

@@ -38,6 +38,6 @@ void main()
     vec3 pos = vec3(x + attractor.x, position.y, 0.0) + delta * normal;
     
     mat4 mvp = view_proj * world;
-    gl_Position = mvp * vec4(pos.x, pos.y, pos.z, 1.0);
+    gl_Position = mvp * vec4((attractor.x != 0.0) ? attractor.x : position.x, pos.y, pos.z, 1.0);
     var_texcoord0 = texcoord0;    
 }

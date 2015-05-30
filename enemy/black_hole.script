@@ -40,6 +40,7 @@ function update(self, dt)
 	local bounce_freq = bounce_min_freq + self.power * (bounce_max_freq - bounce_min_freq)
 	local bounce_t = math.sin(self.timer * math.pi * 2 * bounce_freq)
 	local scale = min_scale + self.power * (max_scale - min_scale) + bounce_t * bounce_scale
+	msg.post("level#script", "add_impact", {magnitude = -self.power * 10, position = go.get_position()})
 	sprite.set_scale("#foreground", vmath.vector3(scale, scale, 0))
 	sprite.set_scale("#background", vmath.vector3(scale, scale, 0))
 	bounce_t = (bounce_t + 1) * 0.5

@@ -12,7 +12,6 @@ function update(self, dt)
 	self.velocity = dynamics_update(self.dynamics, self.velocity, dt)
 	p = p + self.velocity * dt
 	go.set_position(p)
-	msg.post("level#script", "add_impact", {magnitude = 10, position = p})
 	self.acc = vmath.vector3()
 end
 
