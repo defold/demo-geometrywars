@@ -187,26 +187,6 @@ embedded_components {
   }
 }
 embedded_components {
-  id: "music"
-  type: "sound"
-  data: "sound: \"/level/overloadmaster.ogg\"\n"
-  "looping: 0\n"
-  "group: \"master\"\n"
-  "gain: 1.0\n"
-  ""
-  position {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-}
-embedded_components {
   id: "quad"
   type: "model"
   data: "mesh: \"/materials/quad.dae\"\n"

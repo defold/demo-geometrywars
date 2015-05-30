@@ -16,10 +16,12 @@ local function set_render_mode(self, action_id)
 end
 
 function init(self)
+	math.randomseed(1)
 	msg.post(nil, "acquire_input_focus")
 	msg.post("#stage", "load")
 	msg.post("#stage", "init")
 	msg.post("#stage", "enable")
+	msg.post("#music", "play_sound")
 	self.paused = false
 	self.actions = {
 		[hash("toggle")] = toggle_profile,

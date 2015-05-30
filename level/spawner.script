@@ -2,7 +2,8 @@ require "level.level_util"
 
 function random_spawn(self, enemy_factory)
 	local min, max = level_get_aabb()
-	local p = min + (math.random() * (max - min))
+	local ext = max - min
+	local p = min + vmath.vector3(math.random() * ext.x, math.random() * ext.y, 0)
 	factory.create(enemy_factory, p)
 end
 
@@ -12,10 +13,20 @@ function burst_spawn(self, enemy_factory)
 	end
 end
 
+function black_hole_spawn(self, enemy_factory)
+	local min, max = level_get_aabb()
+	local center = min + 0.5 * (max - min)
+	for k,v in pairs(self.markers) do
+		local p = center + 0.5 * (v - center)
+		factory.create(enemy_factory, p)
+	end
+end
+
 function init(self)
 	local chaser = msg.url("#chaser_factory")
 	local swirler = msg.url("#swirler_factory")
 	local roamer = msg.url("#roamer_factory")
+	local black_hole = msg.url("#black_hole_factory")
 	self.markers = {[go.get_id("ne_marker")] = vmath.vector3(), [go.get_id("se_marker")] = vmath.vector3(),
 		[go.get_id("nw_marker")] = vmath.vector3(), [go.get_id("sw_marker")] = vmath.vector3()}
 	for k,v in pairs(self.markers) do
@@ -25,13 +36,25 @@ function init(self)
 	self.waves = {
 		--duration, rate, factory, callback 
 		{2, 0, nil, nil},
-		{10, 0.5, roamer, random_spawn},
+		{5, 0.5, roamer, random_spawn},
 		{2, 0, nil, nil},
 		{2, 4, chaser, burst_spawn},
 		{2, 0, nil, nil},
-		{10, 0.5, roamer, random_spawn},
+		{5, 0.5, roamer, random_spawn},
 		{2, 0, nil, nil},
-		{2, 4, swirler, burst_spawn},
+		{2.5, 4, swirler, burst_spawn},
+		{4.2, 0, nil, nil},
+		{0.1, 1, black_hole, black_hole_spawn},
+		{2, 0, nil, nil},
+		{8, 12, chaser, random_spawn},
+		{4, 0, nil, nil},
+		{2.5, 4, swirler, burst_spawn},
+		{2, 0, nil, nil},
+		{2, 4, chaser, burst_spawn},
+		{2, 0, nil, nil},
+		{2.5, 4, swirler, burst_spawn},
+		{2, 0, nil, nil},
+		{2, 4, chaser, burst_spawn},
 	}
 	self.wave_index = 0
 	self.spawn_timer = 0

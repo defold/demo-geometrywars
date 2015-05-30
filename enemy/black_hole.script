@@ -60,8 +60,19 @@ function update(self, dt)
 	go.set_position(level_clamp(p))
 end
 
+local function activate(self)
+	self.dormant = false
+	self.power = start_power
+	msg.post("#sensor", "enable")
+    msg.post("#background", "enable")
+    particlefx.play("#particlefx")
+end
+
 function on_message(self, message_id, message, sender)
 	if message_id == hash("collision_response") and message.other_id ~= go.get_id() then
+		if self.dormant then
+			activate(self)
+		end
 		if sender.fragment == hash("sensor") then
 			local p = go.get_position()
 			local d = p - message.other_position
@@ -71,11 +82,7 @@ function on_message(self, message_id, message, sender)
 		else
 			if message.group == hash("bullet") then
 				if self.dormant then
-					self.dormant = false
-					self.power = start_power
-					msg.post("#sensor", "enable")
-				    msg.post("#background", "enable")
-				    particlefx.play("#particlefx")
+					activate(self)
 				else
 					self.power = self.power - power_dec
 					self.power = math.max(0, self.power)
