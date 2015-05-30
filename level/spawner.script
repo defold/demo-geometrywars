@@ -34,7 +34,7 @@ function init(self)
 	end
 	self.wave_timer = 0
 	self.waves = {
-		--duration, rate, factory, callback 
+		--duration, rate, factory, callback
 		{2, 0, nil, nil},
 		{5, 0.5, roamer, random_spawn},
 		{2, 0, nil, nil},
