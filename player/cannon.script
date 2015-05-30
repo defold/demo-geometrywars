@@ -12,6 +12,7 @@ function update(self, dt)
 			local dir = self.target - go.get_world_position()
 			local angle = math.atan2(dir.y, dir.x)
 			factory.create("#factory", go.get_world_position(), vmath.quat_rotation_z(angle))
+			--msg.post("#sound", "play_sound", {gain = 0.2})
 		end
 	else
 		self.timer = 0
