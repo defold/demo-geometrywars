@@ -34,7 +34,6 @@ end
 
 function update(self, dt)
 	self.timer = self.timer + dt
-	print(self.timer)
 	if self.timer > self.outro_time and not self.outro then
 		self.outro = true
 		msg.post("#outro", "enable")
