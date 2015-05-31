@@ -1,6 +1,21 @@
 components {
-  id: "gui"
+  id: "intro"
   component: "/gui/intro.gui"
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+}
+components {
+  id: "outro"
+  component: "/gui/outro.gui"
   position {
     x: 0.0
     y: 0.0

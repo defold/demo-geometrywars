@@ -27,6 +27,19 @@ function init(self)
 		[hash("render3")] = set_render_mode,
 		[hash("render4")] = set_render_mode
 	}
+	self.timer = 0
+	self.outro = false
+	self.outro_time = 115
+end
+
+function update(self, dt)
+	self.timer = self.timer + dt
+	print(self.timer)
+	if self.timer > self.outro_time and not self.outro then
+		self.outro = true
+		msg.post("#outro", "enable")
+		msg.post("#outro", "start")
+	end
 end
 
 function on_message(self, message_id, message, sender)
