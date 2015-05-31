@@ -45,7 +45,7 @@ function init(self)
 		{2.5, 4, swirler, burst_spawn},
 		{4.2, 0, nil, nil},
 		{0.1, 1, black_hole, black_hole_spawn},
-		{2, 0, nil, nil},
+		{1.5, 0, nil, nil},
 		{8, 12, chaser, random_spawn},
 		{4, 0, nil, nil},
 		{2.5, 4, swirler, burst_spawn},

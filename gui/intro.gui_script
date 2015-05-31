@@ -19,7 +19,6 @@ function update(self, dt)
 		local text = self.texts[self.typing]
 		local count = math.floor(self.timer / typing_delay + 1)
 		if math.min(#text, count) > self.count then
-			print(count, self.count)
 			msg.post("#sound", "play_sound")
 			self.count = count
 		end
