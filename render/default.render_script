@@ -125,6 +125,8 @@ function init(self)
 	    	table.insert(self.postfx_constants, constants)
 	    end
 	end
+	self.gui_constants = render.constant_buffer()
+	self.timer = 0
 end
 
 function blit(self, source, target)
@@ -305,8 +307,11 @@ function update(self)
     render.set_projection(vmath.matrix4_orthographic(0, render.get_window_width(), 0, render.get_window_height(), -1, 1))
     render.draw_debug3d()
 
-    render.draw(self.gui_pred)
-    render.draw(self.text_pred)
+	local constants = self.gui_constants
+	self.timer = self.timer + 0.016666 * 0.5
+	constants.config = vmath.vector4(self.timer, 0.0, 0.0, 0.0)
+    render.draw(self.gui_pred, constants)
+    render.draw(self.text_pred, constants)
 
     render.set_depth_mask(false)
     render.draw_debug2d()

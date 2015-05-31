@@ -18,10 +18,6 @@ end
 function init(self)
 	math.randomseed(1)
 	msg.post(nil, "acquire_input_focus")
-	msg.post("#stage", "load")
-	msg.post("#stage", "init")
-	msg.post("#stage", "enable")
-	msg.post("#music", "play_sound")
 	self.paused = false
 	self.actions = {
 		[hash("toggle")] = toggle_profile,
@@ -31,6 +27,14 @@ function init(self)
 		[hash("render3")] = set_render_mode,
 		[hash("render4")] = set_render_mode
 	}
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("start") then
+		msg.post("#stage", "load")
+		msg.post("#stage", "init")
+		msg.post("#stage", "enable")
+	end
 end
 
 function on_input(self, action_id, action)

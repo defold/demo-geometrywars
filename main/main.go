@@ -1,4 +1,19 @@
 components {
+  id: "gui"
+  component: "/gui/intro.gui"
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+}
+components {
   id: "script"
   component: "/main/main.script"
   position {
@@ -14,9 +29,9 @@ components {
   }
 }
 embedded_components {
-  id: "music"
+  id: "sound"
   type: "sound"
-  data: "sound: \"/level/overloadshortmaster.wav\"\n"
+  data: "sound: \"/gui/Wall1.wav\"\n"
   "looping: 0\n"
   "group: \"master\"\n"
   "gain: 1.0\n"
