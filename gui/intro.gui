@@ -42,7 +42,7 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "Team Defold presents"
+  text: "Defold Crew presents"
   font: "small"
   id: "present"
   xanchor: XANCHOR_NONE
