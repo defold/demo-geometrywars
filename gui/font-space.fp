@@ -52,7 +52,7 @@ void main_default()
 {
     lowp vec2 borders = eval_borders(var_texcoord0);
     vec4 outline = vec4(hsv2rgb(vec3(config.x + var_pos.x, 1.0, 1.0)), 1.0) * var_outline_color.w;
-    gl_FragColor = mix(mix(var_face_color, outline, borders.y), vec4(0), borders.x);
+    gl_FragColor = mix(mix(vec4(0, 0, 0, 0), outline, borders.y), vec4(0), borders.x);
 }
 
 void main()
