@@ -60,6 +60,7 @@ nodes {
   clipping_visible: true
   clipping_inverted: false
   alpha: 0.5
+  template_node_child: false
 }
 nodes {
   position {
@@ -119,9 +120,10 @@ nodes {
   clipping_mode: CLIPPING_MODE_NONE
   clipping_visible: true
   clipping_inverted: false
-  alpha: 0.0
+  alpha: 1.0
   outline_alpha: 1.0
   shadow_alpha: 1.0
+  template_node_child: false
 }
 nodes {
   position {
@@ -181,9 +183,10 @@ nodes {
   clipping_mode: CLIPPING_MODE_NONE
   clipping_visible: true
   clipping_inverted: false
-  alpha: 0.0
+  alpha: 1.0
   outline_alpha: 1.0
   shadow_alpha: 1.0
+  template_node_child: false
 }
 nodes {
   position {
@@ -243,9 +246,10 @@ nodes {
   clipping_mode: CLIPPING_MODE_NONE
   clipping_visible: true
   clipping_inverted: false
-  alpha: 0.0
+  alpha: 1.0
   outline_alpha: 1.0
   shadow_alpha: 1.0
+  template_node_child: false
 }
 nodes {
   position {
@@ -305,9 +309,10 @@ nodes {
   clipping_mode: CLIPPING_MODE_NONE
   clipping_visible: true
   clipping_inverted: false
-  alpha: 0.0
+  alpha: 1.0
   outline_alpha: 1.0
   shadow_alpha: 1.0
+  template_node_child: false
 }
 nodes {
   position {
@@ -367,9 +372,10 @@ nodes {
   clipping_mode: CLIPPING_MODE_NONE
   clipping_visible: true
   clipping_inverted: false
-  alpha: 0.0
+  alpha: 1.0
   outline_alpha: 1.0
   shadow_alpha: 1.0
+  template_node_child: false
 }
 nodes {
   position {
@@ -429,9 +435,10 @@ nodes {
   clipping_mode: CLIPPING_MODE_NONE
   clipping_visible: true
   clipping_inverted: false
-  alpha: 0.0
+  alpha: 1.0
   outline_alpha: 1.0
   shadow_alpha: 1.0
+  template_node_child: false
 }
 nodes {
   position {
@@ -491,8 +498,10 @@ nodes {
   clipping_mode: CLIPPING_MODE_NONE
   clipping_visible: true
   clipping_inverted: false
-  alpha: 0.0
+  alpha: 1.0
   outline_alpha: 1.0
   shadow_alpha: 1.0
+  template_node_child: false
 }
 material: "/builtins/materials/gui.material"
+adjust_reference: ADJUST_REFERENCE_LEGACY
