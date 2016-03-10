@@ -348,7 +348,7 @@ emitters {
     key: EMITTER_KEY_PARTICLE_SPEED
     points {
       x: 0.0
-      y: 150.0
+      y: 300.0
       t_x: 1.0
       t_y: 0.0
     }
@@ -358,7 +358,7 @@ emitters {
     key: EMITTER_KEY_PARTICLE_SIZE
     points {
       x: 0.0
-      y: 300.0
+      y: 500.0
       t_x: 1.0
       t_y: 0.0
     }
@@ -455,14 +455,8 @@ emitters {
     points {
       x: 0.0
       y: 0.0
-      t_x: 0.19398102
-      t_y: 0.9810053
-    }
-    points {
-      x: 0.12887236
-      y: 0.39311206
-      t_x: 0.99418455
-      t_y: 0.10768964
+      t_x: 0.97729266
+      t_y: 0.21189404
     }
     points {
       x: 0.5947955

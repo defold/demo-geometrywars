@@ -22,40 +22,59 @@ function black_hole_spawn(self, enemy_factory)
 	end
 end
 
+local chaser = 1
+local swirler = 2
+local roamer = 3
+local black_hole = 4
+
+local initial_waves = {
+	{2, 0, nil, nil},
+	{2.5, 4, swirler, burst_spawn},
+	{4.2, 0, nil, nil},
+	{0.1, 1, black_hole, black_hole_spawn},
+	{1.5, 0, nil, nil},
+	{8, 12, chaser, random_spawn},
+	{4, 0, nil, nil},
+	{2.5, 4, swirler, burst_spawn},
+	{2, 0, nil, nil},
+	{2, 4, chaser, burst_spawn},
+	{2, 0, nil, nil},
+	{2.5, 4, swirler, burst_spawn},
+	{2, 0, nil, nil},
+	{2, 4, chaser, burst_spawn},
+	{4.2, 0, nil, nil},
+	{0.1, 1, black_hole, black_hole_spawn},
+}
+
+local loop_waves = {
+	{2, 0, nil, nil},
+	{2.5, 4, swirler, burst_spawn},
+	{1.5, 0, nil, nil},
+	{8, 12, chaser, random_spawn},
+	{4, 0, nil, nil},
+	{2.5, 4, swirler, burst_spawn},
+	{2, 0, nil, nil},
+	{2, 4, chaser, burst_spawn},
+	{2, 0, nil, nil},
+	{2.5, 4, swirler, burst_spawn},
+	{2, 0, nil, nil},
+	{2, 4, chaser, burst_spawn},
+}
+
 function init(self)
-	local chaser = msg.url("#chaser_factory")
-	local swirler = msg.url("#swirler_factory")
-	local roamer = msg.url("#roamer_factory")
-	local black_hole = msg.url("#black_hole_factory")
+	self.factories = {
+		[chaser] = msg.url("#chaser_factory"),
+		[swirler] = msg.url("#swirler_factory"),
+		[roamer] = msg.url("#roamer_factory"),
+		[black_hole] = msg.url("#black_hole_factory")
+	}
 	self.markers = {[go.get_id("ne_marker")] = vmath.vector3(), [go.get_id("se_marker")] = vmath.vector3(),
 		[go.get_id("nw_marker")] = vmath.vector3(), [go.get_id("sw_marker")] = vmath.vector3()}
 	for k,v in pairs(self.markers) do
 		msg.post(k, "request_transform")
 	end
 	self.wave_timer = 0
-	self.waves = {
-		--duration, rate, factory, callback
-		{2, 0, nil, nil},
-		{5, 0.5, roamer, random_spawn},
-		{2, 0, nil, nil},
-		{2, 4, chaser, burst_spawn},
-		{2, 0, nil, nil},
-		{5, 0.5, roamer, random_spawn},
-		{2, 0, nil, nil},
-		{2.5, 4, swirler, burst_spawn},
-		{4.2, 0, nil, nil},
-		{0.1, 1, black_hole, black_hole_spawn},
-		{1.5, 0, nil, nil},
-		{8, 12, chaser, random_spawn},
-		{4, 0, nil, nil},
-		{2.5, 4, swirler, burst_spawn},
-		{2, 0, nil, nil},
-		{2, 4, chaser, burst_spawn},
-		{2, 0, nil, nil},
-		{2.5, 4, swirler, burst_spawn},
-		{2, 0, nil, nil},
-		{2, 4, chaser, burst_spawn},
-	}
+	self.waves = initial_waves
 	self.wave_index = 0
 	self.spawn_timer = 0
 	self.spawn_delay = 0 
@@ -67,6 +86,7 @@ function update(self, dt)
 		self.wave_index = self.wave_index + 1
 		if self.wave_index > #self.waves then
 			self.wave_index = 1
+			self.waves = loop_waves
 		end
 		local wave = self.waves[self.wave_index]
 		self.wave_timer = wave[1]
@@ -78,7 +98,7 @@ function update(self, dt)
 	while self.spawn_timer < 0 do
 		self.spawn_timer = self.spawn_timer + self.spawn_delay
 		if wave[4] then
-			wave[4](self, wave[3])
+			wave[4](self, self.factories[wave[3]])
 		end
 	end
 end

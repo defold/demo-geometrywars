@@ -1,5 +1,5 @@
-local LIGHT_SIZE = 512
-local SIZE = 512
+local LIGHT_SIZE = 128
+local SIZE = 128
 local PASS_COUNT = 4
 local INV_KERNEL_SUM = 1/16
 
@@ -21,8 +21,8 @@ local function setup_render_targets(self)
     local template = { format = render.FORMAT_RGB,
                        width = render.get_window_width(),
                        height = render.get_window_height(),
-                       min_filter = render.FILTER_LINEAR,
-                       mag_filter = render.FILTER_LINEAR,
+                       min_filter = render.FILTER_NEAREST,
+                       mag_filter = render.FILTER_NEAREST,
                        u_wrap = render.WRAP_CLAMP,
                        v_wrap = render.WRAP_CLAMP }
     

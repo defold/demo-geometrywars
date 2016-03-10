@@ -34,11 +34,24 @@ end
 
 function update(self, dt)
 	self.timer = self.timer + dt
-	if self.timer > self.outro_time and not self.outro then
+	-- GDC
+	--[[ if self.timer > self.outro_time and not self.outro then
 		self.outro = true
 		msg.post("#outro", "enable")
 		msg.post("#outro", "start")
 	end
+	--]]
+end
+
+function on_reload(self)
+	self.actions = {
+		[hash("toggle")] = toggle_profile,
+		[hash("pause")] = pause,
+		[hash("render1")] = set_render_mode,
+		[hash("render2")] = set_render_mode,
+		[hash("render3")] = set_render_mode,
+		[hash("render4")] = set_render_mode
+	}
 end
 
 function on_message(self, message_id, message, sender)
