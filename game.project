@@ -1,5 +1,5 @@
 [project]
-title = Side-Scroller
+title = GeometryWars
 
 [bootstrap]
 main_collection = /main/main.collectionc
