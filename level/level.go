@@ -48,6 +48,9 @@ embedded_components {
   type: "model"
   data: "mesh: \"/materials/quad.dae\"\n"
   "material: \"/materials/blur.material\"\n"
+  "skeleton: \"\"\n"
+  "animations: \"\"\n"
+  "default_animation: \"\"\n"
   ""
   position {
     x: 0.0
@@ -173,6 +176,9 @@ embedded_components {
   data: "mesh: \"/level/grid5.dae\"\n"
   "material: \"/level/grid.material\"\n"
   "textures: \"/level/line.png\"\n"
+  "skeleton: \"\"\n"
+  "animations: \"\"\n"
+  "default_animation: \"\"\n"
   ""
   position {
     x: 0.0
@@ -191,6 +197,9 @@ embedded_components {
   type: "model"
   data: "mesh: \"/materials/quad.dae\"\n"
   "material: \"/materials/quad.material\"\n"
+  "skeleton: \"\"\n"
+  "animations: \"\"\n"
+  "default_animation: \"\"\n"
   ""
   position {
     x: 0.0
