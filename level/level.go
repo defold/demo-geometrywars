@@ -173,7 +173,7 @@ embedded_components {
 embedded_components {
   id: "model"
   type: "model"
-  data: "mesh: \"/level/grid5.dae\"\n"
+  data: "mesh: \"/level/grid6.dae\"\n"
   "material: \"/level/grid.material\"\n"
   "textures: \"/level/line.png\"\n"
   "skeleton: \"\"\n"
