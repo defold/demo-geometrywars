@@ -20,7 +20,7 @@ function init(self)
 	msg.post(nil, "acquire_input_focus")
 	self.paused = false
 	self.actions = {
-		[hash("toggle")] = toggle_profile,
+		[hash("profiler")] = toggle_profile,
 		[hash("pause")] = pause,
 		[hash("render1")] = set_render_mode,
 		[hash("render2")] = set_render_mode,
