@@ -30,8 +30,7 @@ function init(self)
 	self.timer = 0
 	self.outro = false
 	self.outro_time = 118
-	-- turn on and off the profiler for local builds
-    -- msg.post("@system:", "toggle_profile")
+
 end
 
 function update(self, dt)
