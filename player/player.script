@@ -91,15 +91,19 @@ function update(self, dt)
 	local dir = vmath.normalize(weight * -threat_dir + (1 - weight) * target_dir)
 	local current_dir = vmath.rotate(go.get_rotation(), vmath.vector3(1, 0, 0))
 	if vmath.length_sqr(current_dir) > 0 and vmath.length_sqr(dir) > 0 then
-		self.velocity = vmath.slerp(8 * dt, current_dir, dir) * max_speed
+		if vmath.length(current_dir+dir) > 0.001 then
+			self.velocity = vmath.slerp(8 * dt, current_dir, dir) * max_speed
+		end
 	end
 	local v0 = self.velocity
 	local v_len_sq = vmath.length_sqr(self.velocity)
 	p = p + 0.5 * (v0 + self.velocity) * dt
-	go.set_position(level_clamp(p))
+	local p_level_clamp = level_clamp(p)
+	go.set_position(p_level_clamp)
 	if v_len_sq > 0 then
 		local angle = math.atan2(self.velocity.y, self.velocity.x)
-		go.set_rotation(vmath.quat_rotation_z(angle))
+		local rot_from_angle = vmath.quat_rotation_z(angle)
+		go.set_rotation(rot_from_angle)
 	end
 	if self.max_threat > 0 then
 		msg.post("cannon#script", "set_target", {target = self.max_threat_position})
