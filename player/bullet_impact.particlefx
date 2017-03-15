@@ -19,13 +19,15 @@ emitters {
   material: "/builtins/materials/particlefx.material"
   blend_mode: BLEND_MODE_ADD_ALPHA
   particle_orientation: PARTICLE_ORIENTATION_INITIAL_DIRECTION
+  inherit_velocity: 0.0
   max_particle_count: 8
   type: EMITTER_TYPE_CONE
+  start_delay: 0.0
   properties {
     key: EMITTER_KEY_SPAWN_RATE
     points {
       x: 0.0
-      y: 50
+      y: 50.0
       t_x: 1.0
       t_y: 0.0
     }
@@ -207,4 +209,5 @@ emitters {
       spread: 0.5
     }
   }
+  size_mode: SIZE_MODE_MANUAL
 }

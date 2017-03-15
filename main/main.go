@@ -67,6 +67,7 @@ embedded_components {
   id: "stage"
   type: "collectionproxy"
   data: "collection: \"/level/stage.collection\"\n"
+  "exclude: false\n"
   ""
   position {
     x: 0.0

@@ -19,14 +19,15 @@ emitters {
   material: "/builtins/materials/particlefx.material"
   blend_mode: BLEND_MODE_ADD_ALPHA
   particle_orientation: PARTICLE_ORIENTATION_DEFAULT
-  inherit_velocity: 0
+  inherit_velocity: 0.0
   max_particle_count: 128
   type: EMITTER_TYPE_CONE
+  start_delay: 0.0
   properties {
     key: EMITTER_KEY_SPAWN_RATE
     points {
       x: 0.0
-      y: 50
+      y: 50.0
       t_x: 1.0
       t_y: 0.0
     }
@@ -328,6 +329,7 @@ emitters {
       spread: 0.0
     }
   }
+  size_mode: SIZE_MODE_MANUAL
 }
 emitters {
   id: "emitter"
@@ -350,14 +352,15 @@ emitters {
   material: "/materials/particlefx_light.material"
   blend_mode: BLEND_MODE_ADD_ALPHA
   particle_orientation: PARTICLE_ORIENTATION_DEFAULT
-  inherit_velocity: 0
+  inherit_velocity: 0.0
   max_particle_count: 60
   type: EMITTER_TYPE_CONE
+  start_delay: 0.0
   properties {
     key: EMITTER_KEY_SPAWN_RATE
     points {
       x: 0.0
-      y: 10
+      y: 10.0
       t_x: 1.0
       t_y: 0.0
     }
@@ -665,4 +668,5 @@ emitters {
       spread: 0.0
     }
   }
+  size_mode: SIZE_MODE_MANUAL
 }

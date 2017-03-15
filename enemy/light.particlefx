@@ -19,13 +19,15 @@ emitters {
   material: "/materials/particlefx_light.material"
   blend_mode: BLEND_MODE_ADD_ALPHA
   particle_orientation: PARTICLE_ORIENTATION_DEFAULT
+  inherit_velocity: 0.0
   max_particle_count: 128
   type: EMITTER_TYPE_SPHERE
+  start_delay: 0.0
   properties {
     key: EMITTER_KEY_SPAWN_RATE
     points {
       x: 0.0
-      y: 33
+      y: 33.0
       t_x: 1.0
       t_y: 0.0
     }
@@ -188,4 +190,5 @@ emitters {
       t_y: 0.0
     }
   }
+  size_mode: SIZE_MODE_MANUAL
 }
