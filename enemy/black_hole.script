@@ -1,5 +1,5 @@
 local roaming = require("enemy.roaming")
-require("level.level_util")
+local level_util = require("level.level_util")
 
 local sensor_radius = 250
 local min_force = 300
@@ -57,7 +57,7 @@ function update(self, dt)
 	local velocity = roaming.update(self.roaming, dt)
 	local p = go.get_position()
 	p = p + velocity * dt
-	go.set_position(level_clamp(p))
+	go.set_position(level_util.clamp(p))
 end
 
 local function activate(self)

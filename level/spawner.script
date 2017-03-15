@@ -1,7 +1,7 @@
-require "level.level_util"
+local level_util = require "level.level_util"
 
 function random_spawn(self, enemy_factory)
-	local min, max = level_get_aabb()
+	local min, max = level_util.get_aabb()
 	local ext = max - min
 	local p = min + vmath.vector3(math.random() * ext.x, math.random() * ext.y, 0)
 	factory.create(enemy_factory, p)
@@ -14,7 +14,7 @@ function burst_spawn(self, enemy_factory)
 end
 
 function black_hole_spawn(self, enemy_factory)
-	local min, max = level_get_aabb()
+	local min, max = level_util.get_aabb()
 	local center = min + 0.5 * (max - min)
 	for _,marker in ipairs(self.markers) do
 		local p = center + 0.5 * (go.get_position(marker) - center)

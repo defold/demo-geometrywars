@@ -1,5 +1,5 @@
-require "level.level_util"
-require "shared.dynamics"
+local level_util = require "level.level_util"
+local dynamics = require "shared.dynamics"
 
 local sprite_bounce_factor = 0.1
 local sprite_bounce_freq = 8
@@ -23,7 +23,7 @@ function init(self)
 	self.target = go.get_world_position("/player/player")
 	self.spawning = true
 	self.spawn_timer = spawn_duration
-	self.dynamics = dynamics_init()
+	self.dynamics = dynamics.init()
 end
 
 function update(self, dt)
@@ -50,14 +50,14 @@ function update(self, dt)
 			local target_vel = vmath.normalize(delta) * max_speed
 			local delta_vel = target_vel - self.velocity
 			if vmath.length_sqr(delta_vel) > 0 then
-				dynamics_add_acc(self.dynamics, vmath.normalize(delta_vel) * max_acc)
+				dynamics.add_acc(self.dynamics, vmath.normalize(delta_vel) * max_acc)
 			end
 		end
 	end
-	self.velocity = dynamics_update(self.dynamics, self.velocity, dt)
+	self.velocity = dynamics.update(self.dynamics, self.velocity, dt)
 	-- integration
 	p = p + 0.5 * (self.velocity + v0) * dt
-	go.set_position(level_clamp(p))
+	go.set_position(level_util.clamp(p))
 	-- bouncy sprite
 	local bounce_t = math.sin(self.timer * sprite_bounce_freq)
 	msg.post("#sprite", "set_scale", {scale = vmath.vector3(1 + bounce_t * sprite_bounce_factor, 1 + (1 - bounce_t) * sprite_bounce_factor, 1)})
@@ -73,7 +73,7 @@ function on_message(self, message_id, message, sender)
 		end
 	else
 		if not self.spawning then
-			dynamics_on_message(self.dynamics, message_id, message, sender)
+			dynamics.on_message(self.dynamics, message_id, message, sender)
 		end
 	end
 end

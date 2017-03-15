@@ -1,15 +1,15 @@
-require "shared.dynamics"
+local dynamics = require "shared.dynamics"
 
 local speed = 800
 
 function init(self)
 	self.velocity = vmath.rotate(go.get_rotation(), vmath.vector3(1, 0, 0)) * speed
-	self.dynamics = dynamics_init()
+	self.dynamics = dynamics.init()
 end
 
 function update(self, dt)
 	local p = go.get_position()
-	self.velocity = dynamics_update(self.dynamics, self.velocity, dt)
+	self.velocity = dynamics.update(self.dynamics, self.velocity, dt)
 	p = p + self.velocity * dt
 	go.set_position(p)
 	self.acc = vmath.vector3()
@@ -25,6 +25,6 @@ function on_message(self, message_id, message, sender)
 			factory.create("#factory", message.position, vmath.quat_rotation_z(math.atan2(-message.normal.x, message.normal.y)))
 		end
 	else
-		dynamics_on_message(self.dynamics, message_id, message, sender)
+		dynamics.on_message(self.dynamics, message_id, message, sender)
 	end
 end

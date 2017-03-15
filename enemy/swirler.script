@@ -1,5 +1,5 @@
-require "level.level_util"
-require "shared.dynamics"
+local level_util = require "level.level_util"
+local dynamics = require "shared.dynamics"
 
 local color = vmath.vector4(1, 0.2, 0.3, 1)
 local particle_color = vmath.vector4(1, 0.2, 0.3, 1)
@@ -20,7 +20,7 @@ function init(self)
 	self.target = go.get_world_position("/player/player")
 	self.spawning = true
 	self.spawn_timer = spawn_duration
-	self.dynamics = dynamics_init()
+	self.dynamics = dynamics.init()
 end
 
 function update(self, dt)
@@ -56,10 +56,10 @@ function update(self, dt)
 	if vmath.length_sqr(v) > max_speed_sq then
 		v = vmath.normalize(v) * max_speed
 	end
-	self.velocity = dynamics_update(self.dynamics, self.velocity, dt)
+	self.velocity = dynamics.update(self.dynamics, self.velocity, dt)
 	-- integration
 	p = p + (self.velocity + v) * dt
-	go.set_position(level_clamp(p))
+	go.set_position(level_util.clamp(p))
 end
 
 function on_message(self, message_id, message, sender)
@@ -74,7 +74,7 @@ function on_message(self, message_id, message, sender)
 		end
 	else
 		if not self.spawning then
-			dynamics_on_message(self.dynamics, message_id, message, sender)
+			dynamics.on_message(self.dynamics, message_id, message, sender)
 		end
 	end
 end

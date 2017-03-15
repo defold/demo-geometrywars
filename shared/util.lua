@@ -1,4 +1,6 @@
-function hsl(h, s, l)
+local M = {}
+
+function M.hsl(h, s, l)
 	c = (1 - math.abs(2 * l - 1)) * s
 	hp = h / 60
 	x = c * (1 - math.abs((hp % 2) - 1))
@@ -33,4 +35,5 @@ function hsl(h, s, l)
 	m = l - 0.5 * c
 	return vmath.vector4(r+m, g+m, b+m, 1)
 end
-		
+
+return M

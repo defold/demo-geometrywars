@@ -1,4 +1,4 @@
-require "level.level_util"
+local level_util = require "level.level_util"
 
 local max_speed = 400
 
@@ -38,7 +38,7 @@ local function update_target(self, dt)
 	end
 	if self.target_timer <= 0 then
 		self.target_timer = max_target_duration
-		local min, max = level_get_aabb()
+		local min, max = level_util.get_aabb()
 		local margin = vmath.vector3(target_margin, target_margin, 0)
 		min = min + margin
 		max = max - margin
@@ -98,7 +98,7 @@ function update(self, dt)
 	local v0 = self.velocity
 	local v_len_sq = vmath.length_sqr(self.velocity)
 	p = p + 0.5 * (v0 + self.velocity) * dt
-	local p_level_clamp = level_clamp(p)
+	local p_level_clamp = level_util.clamp(p)
 	go.set_position(p_level_clamp)
 	if v_len_sq > 0 then
 		local angle = math.atan2(self.velocity.y, self.velocity.x)

@@ -1,5 +1,5 @@
-require "level.level_util"
-require "shared.util"
+local level_util = require "level.level_util"
+local util = require "shared.util"
 
 local attractor_count = 4
 local attractor_dist = 100
@@ -72,7 +72,7 @@ end
 function update(self, dt)
 	self.timer = self.timer + dt
 	-- temp draw level
-	--level_draw()
+	--level_util.draw()
 
 	update_attractors(self, dt)
 	--pprint(self.attractors)
@@ -94,7 +94,7 @@ function update(self, dt)
 	if self.color_hue > 360 then
 		self.color_hue = self.color_hue - 360
 	end
-	self.color = hsl(self.color_hue, 1, 0.7)
+	self.color = util.hsl(self.color_hue, 1, 0.7)
 	--[[
 	if self.temp then
 		send_attractor(1, self.temp, -0.1)
