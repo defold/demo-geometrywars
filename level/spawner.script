@@ -8,16 +8,16 @@ function random_spawn(self, enemy_factory)
 end
 
 function burst_spawn(self, enemy_factory)
-	for k,v in pairs(self.markers) do
-		factory.create(enemy_factory, v)
+	for _,marker in ipairs(self.markers) do
+		factory.create(enemy_factory, go.get_position(marker))
 	end
 end
 
 function black_hole_spawn(self, enemy_factory)
 	local min, max = level_get_aabb()
 	local center = min + 0.5 * (max - min)
-	for k,v in pairs(self.markers) do
-		local p = center + 0.5 * (v - center)
+	for _,marker in ipairs(self.markers) do
+		local p = center + 0.5 * (go.get_position(marker) - center)
 		factory.create(enemy_factory, p)
 	end
 end
@@ -68,11 +68,7 @@ function init(self)
 		[roamer] = msg.url("#roamer_factory"),
 		[black_hole] = msg.url("#black_hole_factory")
 	}
-	self.markers = {[go.get_id("ne_marker")] = vmath.vector3(), [go.get_id("se_marker")] = vmath.vector3(),
-		[go.get_id("nw_marker")] = vmath.vector3(), [go.get_id("sw_marker")] = vmath.vector3()}
-	for k,v in pairs(self.markers) do
-		msg.post(k, "request_transform")
-	end
+	self.markers = {go.get_id("ne_marker"), go.get_id("se_marker"), go.get_id("nw_marker"), go.get_id("sw_marker")}
 	self.wave_timer = 0
 	self.waves = initial_waves
 	self.wave_index = 0
@@ -100,12 +96,6 @@ function update(self, dt)
 		if wave[4] then
 			wave[4](self, self.factories[wave[3]])
 		end
-	end
-end
-
-function on_message(self, message_id, message, sender)
-	if message_id == hash("transform_response") then
-		self.markers[sender.path] = message.world_position
 	end
 end
 
