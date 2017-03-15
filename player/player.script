@@ -125,8 +125,6 @@ function on_message(self, message_id, message, sender)
 				-- TODO bump
 			end
 		end
-	elseif message_id == hash("request_transform") then
-		print("TARGET")
 	end
 end
 

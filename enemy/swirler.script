@@ -17,7 +17,7 @@ function init(self)
 	self.velocity = vmath.vector3(0, 0, 0)
 	sprite.set_constant("#sprite", "tint", color)
 	sprite.set_constant("#light_mask", "tint", color)
-	msg.post("/player/player", "request_transform")
+	self.target = go.get_world_position("/player/player")
 	self.spawning = true
 	self.spawn_timer = spawn_duration
 	self.dynamics = dynamics_init()
@@ -35,7 +35,7 @@ function update(self, dt)
 		end
 		return
 	end
-	msg.post("/player/player", "request_transform")
+	self.target = go.get_world_position("/player/player")
 	self.timer = self.timer + dt
 	-- locomotion
 	local p = go.get_position()
