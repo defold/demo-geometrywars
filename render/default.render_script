@@ -322,6 +322,9 @@ function on_message(self, message_id, message, sender)
         self.clear_color = message.color
     elseif message_id == hash("set_view_projection") then
         self.view = message.view
+    elseif message_id == hash("window_resized") then
+        pprint(message)
+        setup_render_targets(self)
     else
 		for k,v in pairs(RENDER_MODES) do
 			if v == message_id then
