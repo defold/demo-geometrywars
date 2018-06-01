@@ -26,3 +26,12 @@ max_count = 128
 [sprite]
 max_count = 128
 
+[ios]
+bundle_identifier = comn.defold.geometrywars
+
+[android]
+package = comn.defold.geometrywars
+
+[osx]
+bundle_identifier = comn.defold.geometrywars
+
