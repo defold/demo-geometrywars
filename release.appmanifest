@@ -1,0 +1,70 @@
+# App manifest generated Wed Feb 20 2019 16:58:01 GMT+0100 (CET)
+# Settings: Profiler
+platforms:
+    x86_64-osx:
+        context:
+            excludeLibs: ["profilerext"]
+            excludeSymbols: ["ProfilerExt"]
+            libs: [profilerext_null]
+            linkFlags: []
+
+    x86_64-linux:
+        context:
+            excludeLibs: ["profilerext"]
+            excludeSymbols: ["ProfilerExt"]
+            libs: []
+            linkFlags: []
+
+    js-web:
+        context:
+            excludeLibs: ["profilerext"]
+            excludeJsLibs: []
+            excludeSymbols: ["ProfilerExt"]
+            libs: []
+            linkFlags: []
+
+    wasm-web:
+        context:
+            excludeLibs: ["profilerext"]
+            excludeJsLibs: []
+            excludeSymbols: ["ProfilerExt"]
+            libs: []
+            linkFlags: []
+
+    x86-win32:
+        context:
+            excludeLibs: ["libprofilerext"]
+            excludeSymbols: ["ProfilerExt"]
+            libs: []
+            linkFlags: []
+
+    x86_64-win32:
+        context:
+            excludeLibs: ["libprofilerext"]
+            excludeSymbols: ["ProfilerExt"]
+            libs: []
+            linkFlags: []
+
+    armv7-android:
+        context:
+            excludeLibs: ["profilerext"]
+            excludeJars: []
+            excludeSymbols: ["ProfilerExt"]
+            libs: []
+            linkFlags: []
+
+    armv7-ios:
+        context:
+            excludeLibs: ["profilerext"]
+            excludeSymbols: ["ProfilerExt"]
+            libs: []
+            linkFlags: []
+
+    arm64-ios:
+        context:
+            excludeLibs: ["profilerext"]
+            excludeSymbols: ["ProfilerExt"]
+            libs: []
+            linkFlags: []
+
+

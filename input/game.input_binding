@@ -30,6 +30,106 @@ key_trigger {
   input: KEY_4
   action: "render4"
 }
+key_trigger {
+  input: KEY_KP_DECIMAL
+  action: "profiler_wait_include"
+}
+key_trigger {
+  input: KEY_KP_DIVIDE
+  action: "profiler_peak"
+}
+key_trigger {
+  input: KEY_KP_MULTIPLY
+  action: "profiler_record"
+}
+key_trigger {
+  input: KEY_KP_8
+  action: "profiler_step_forward"
+}
+key_trigger {
+  input: KEY_P
+  action: "profiler_pause"
+}
+key_trigger {
+  input: KEY_KP_ENTER
+  action: "profiler_toggle"
+}
+key_trigger {
+  input: KEY_F
+  action: "profiler_flush"
+}
+key_trigger {
+  input: KEY_KP_7
+  action: "profiler_step_back"
+}
+key_trigger {
+  input: KEY_KP_0
+  action: "profiler_pause"
+}
+key_trigger {
+  input: KEY_KP_4
+  action: "profiler_step_back_60"
+}
+key_trigger {
+  input: KEY_KP_5
+  action: "profiler_step_forward_60"
+}
+key_trigger {
+  input: KEY_KP_1
+  action: "profiler_goto_begin"
+}
+key_trigger {
+  input: KEY_KP_2
+  action: "profiler_goto_end"
+}
+key_trigger {
+  input: KEY_KP_ADD
+  action: "profiler_expand"
+}
+key_trigger {
+  input: KEY_KP_SUBTRACT
+  action: "profiler_collapse"
+}
+key_trigger {
+  input: KEY_PERIOD
+  action: "profiler_collapse"
+}
+key_trigger {
+  input: KEY_COMMA
+  action: "profiler_expand"
+}
+key_trigger {
+  input: KEY_H
+  action: "profiler_wait_include"
+}
+key_trigger {
+  input: KEY_T
+  action: "profiler_peak"
+}
+key_trigger {
+  input: KEY_D
+  action: "trigger_slow_frame"
+}
+key_trigger {
+  input: KEY_R
+  action: "profiler_record"
+}
+key_trigger {
+  input: KEY_B
+  action: "profiler_step_back"
+}
+key_trigger {
+  input: KEY_N
+  action: "profiler_step_forward"
+}
+key_trigger {
+  input: KEY_F
+  action: "profiler_goto_begin"
+}
+key_trigger {
+  input: KEY_L
+  action: "profiler_goto_end"
+}
 mouse_trigger {
   input: MOUSE_BUTTON_1
   action: "touch"

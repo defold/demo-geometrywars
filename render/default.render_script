@@ -17,6 +17,38 @@ local function dup_table(t)
     return nt
 end
 
+--
+-- projection that centers content with maintained aspect ratio and optional zoom
+--
+local function fixed_projection(near, far, zoom)
+    local projected_width = render.get_window_width() / (zoom or 1)
+    local projected_height = render.get_window_height() / (zoom or 1)
+    local xoffset = -(projected_width - render.get_width()) / 2
+    local yoffset = -(projected_height - render.get_height()) / 2
+    return vmath.matrix4_orthographic(xoffset, xoffset + projected_width, yoffset, yoffset + projected_height, near, far)
+end
+--
+-- projection that centers and fits content with maintained aspect ratio
+--
+local function fixed_fit_projection(near, far)
+    local width = render.get_width()
+    local height = render.get_height()
+    local window_width = render.get_window_width()
+    local window_height = render.get_window_height()
+    local zoom = math.min(window_width / width, window_height / height)
+    return fixed_projection(near, far, zoom)
+end
+--
+-- projection that stretches content
+--
+local function stretch_projection(near, far)
+    return vmath.matrix4_orthographic(0, render.get_width(), 0, render.get_height(), near, far)
+end
+
+local function get_projection(self)
+    return self.projection_fn(self.near, self.far, self.zoom)
+end
+
 local function setup_render_targets(self)
     local template = { format = render.FORMAT_RGB,
                        width = render.get_window_width(),
@@ -224,7 +256,7 @@ local function draw_background(self)
     render.set_viewport(0, 0, LIGHT_SIZE, LIGHT_SIZE / 2)
     render.enable_state(render.STATE_BLEND)
     
-    render.set_projection(vmath.matrix4_orthographic(0, render.get_width(), 0, render.get_height(), -1000, 1000))
+    render.set_projection(get_projection(self))
     render.clear({[render.BUFFER_COLOR_BIT] = self.clear_color, [render.BUFFER_DEPTH_BIT] = 1})
     --render.clear({[render.BUFFER_COLOR_BIT] = vmath.vector4(1, 1, 1, 1), [render.BUFFER_DEPTH_BIT] = 1})
     render.draw(self.light_mask_pred)
@@ -244,8 +276,8 @@ local function draw_background(self)
     render.set_blend_func(render.BLEND_SRC_ALPHA, render.BLEND_ONE_MINUS_SRC_ALPHA)
     render.disable_state(render.STATE_CULL_FACE)
 
-    render.set_projection(vmath.matrix4_orthographic(0, render.get_width(), 0, render.get_height(), -1000, 1000))
-
+    render.set_projection(get_projection(self))
+    
     render.draw(self.grid_pred)
     
     render.set_view(vmath.matrix4())
@@ -256,8 +288,8 @@ local function draw_background(self)
     render.draw(self.quad_pred)
     render.disable_texture(0, self.light_rt)
     render.set_view(self.view)
-    render.set_projection(vmath.matrix4_orthographic(0, render.get_width(), 0, render.get_height(), -1000, 1000))
-
+    render.set_projection(get_projection(self))
+    
     render.draw(self.particle_pred)
     render.disable_render_target(self.background_rt)
     
@@ -266,7 +298,7 @@ end
 
 local function draw_foreground(self)
     render.set_view(self.view)
-    render.set_projection(vmath.matrix4_orthographic(0, render.get_width(), 0, render.get_height(), -1000, 1000))
+    render.set_projection(get_projection(self))
     render.set_viewport(0, 0, render.get_window_width(), render.get_window_height())
     render.enable_state(render.STATE_BLEND)
     render.set_blend_func(render.BLEND_ZERO, render.BLEND_SRC_COLOR)
@@ -304,7 +336,7 @@ function update(self)
 	
     render.set_viewport(0, 0, render.get_window_width(), render.get_window_height())
     render.set_view(vmath.matrix4())
-    render.set_projection(vmath.matrix4_orthographic(0, render.get_window_width(), 0, render.get_window_height(), -1, 1))
+    render.set_projection(get_projection(self))
     render.draw_debug3d()
 
 	local constants = self.gui_constants
@@ -322,8 +354,23 @@ function on_message(self, message_id, message, sender)
         self.clear_color = message.color
     elseif message_id == hash("set_view_projection") then
         self.view = message.view
+    elseif message_id == hash("use_camera_projection") then
+        self.projection_fn = function() return self.projection or vmath.matrix4() end
+    elseif message_id == hash("use_stretch_projection") then
+        self.near = message.near or -1
+        self.far = message.far or 1
+        self.projection_fn = stretch_projection
+    elseif message_id == hash("use_fixed_projection") then
+        self.near = message.near or -1
+        self.far = message.far or 1
+        self.zoom = message.zoom or 1
+        self.projection_fn = fixed_projection
+    elseif message_id == hash("use_fixed_fit_projection") then
+        self.near = message.near or -1
+        self.far = message.far or 1
+        self.projection_fn = fixed_fit_projection
     elseif message_id == hash("window_resized") then
-        pprint(message)
+--        pprint(message)
         setup_render_targets(self)
     else
 		for k,v in pairs(RENDER_MODES) do

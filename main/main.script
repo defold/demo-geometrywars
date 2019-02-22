@@ -1,5 +1,116 @@
+--[[
+
+profiler.enable_ui(true)
+profiler.set_ui_mode(profiler.MODE_RECORD)
+profiler.set_ui_view_mode(profiler.VIEW_MODE_MINIMIZED)
+profiler.set_ui_vsync_wait_visible(false)
+local last_recorded_frame = profiler.recorded_frame_count()
+profiler.view_recorded_frame(last_recorded_frame)
+
+--]]
+
 local function toggle_profile(self, action_id)
-	msg.post("@system:", "toggle_profile")
+	if self.profiler_enabled then
+		self.profiler_enabled = false
+	else
+		self.profiler_enabled = true
+	end
+	profiler.enable_ui(self.profiler_enabled)
+end
+
+local function profiler_collapse(self, action_id)
+	profiler.set_ui_view_mode(profiler.VIEW_MODE_MINIMIZED)
+	self.minimized = false
+end
+
+local function profiler_expand(self, action_id)
+	profiler.set_ui_view_mode(profiler.VIEW_MODE_FULL)
+	self.minimized = true
+end
+
+local function profiler_wait_include(self, action_id)
+	if self.show_wait_time then
+		self.show_wait_time = false
+	else
+		self.show_wait_time = true
+	end
+	profiler.set_ui_vsync_wait_visible(self.show_wait_time)
+end
+
+local function profiler_peak(self, action_id)
+	profiler.set_ui_mode(profiler.MODE_SHOW_PEAK_FRAME)
+	self.recording = false
+	self.paused = true
+end
+
+local function profiler_record(self, action_id)
+	if self.recording then
+		profiler.set_ui_mode(profiler.MODE_PAUSE)
+		self.paused = true
+		self.recording = false
+	else
+		profiler.set_ui_mode(profiler.MODE_RECORD)
+		self.recording = true
+		self.paused = false
+	end
+end
+
+local function profiler_step_back(self, action_id)
+	profiler.view_recorded_frame({distance = -1})
+	self.recording = false
+	self.paused = true
+end
+
+local function profiler_step_forward(self, action_id)
+	profiler.view_recorded_frame({distance = 1})
+	self.recording = false
+	self.paused = true
+end
+
+local function profiler_step_back_60(self, action_id)
+	profiler.view_recorded_frame({distance = -60})
+	self.recording = false
+	self.paused = true
+end
+
+local function profiler_step_forward_60(self, action_id)
+	profiler.view_recorded_frame({distance = 60})
+	self.recording = false
+	self.paused = true
+end
+
+local function profiler_goto_begin(self, action_id)
+	local frame_count = profiler.recorded_frame_count()
+	if frame_count > 0 then
+		profiler.view_recorded_frame({frame = 1})
+	else
+		profiler.set_ui_mode(profiler.MODE_PAUSE)
+	end
+	self.recording = false
+	self.paused = true
+end
+
+local function profiler_goto_end(self, action_id)
+	local frame_count = profiler.recorded_frame_count()
+	if frame_count > 0 then
+		profiler.view_recorded_frame({frame = frame_count})
+	else
+		profiler.set_ui_mode(profiler.MODE_PAUSE)
+	end
+	self.recording = false
+	self.paused = true
+end
+
+local function profiler_pause(self, action_id)
+	if self.paused then
+		profiler.set_ui_mode(profiler.MODE_RUN)
+		self.paused = false
+		self.recording = false
+	else
+		profiler.set_ui_mode(profiler.MODE_PAUSE)
+		self.paused = true
+		self.recording = false
+	end
 end
 
 local function pause(self, action_id)
@@ -15,7 +126,18 @@ local function set_render_mode(self, action_id)
 	msg.post("@render:", action_id)
 end
 
+local TRIGGER_SLOW_FRAME_MESSAGE = hash("recalibrate")
+
+local function trigger_slow_frame(self, action_id)
+	msg.post(".", TRIGGER_SLOW_FRAME_MESSAGE)
+end
+
 function init(self)
+	self.profiler_enabled = false
+	self.paused = false
+	self.minimized = false
+	self.recording = false
+	self.show_wait_time = true
 	math.randomseed(1)
 	msg.post(nil, "acquire_input_focus")
 	self.paused = false
@@ -25,12 +147,26 @@ function init(self)
 		[hash("render1")] = set_render_mode,
 		[hash("render2")] = set_render_mode,
 		[hash("render3")] = set_render_mode,
-		[hash("render4")] = set_render_mode
-	}
+		[hash("render4")] = set_render_mode,
+		[hash("profiler_collapse")] = profiler_collapse,
+		[hash("profiler_expand")] = profiler_expand,
+		[hash("profiler_wait_include")] = profiler_wait_include,
+		[hash("profiler_peak")] = profiler_peak,
+		[hash("profiler_record")] = profiler_record,
+		[hash("profiler_step_back")] = profiler_step_back,
+		[hash("profiler_step_forward")] = profiler_step_forward,
+		[hash("profiler_step_back_60")] = profiler_step_back_60,
+		[hash("profiler_step_forward_60")] = profiler_step_forward_60,
+		[hash("profiler_goto_begin")] = profiler_goto_begin,
+		[hash("profiler_goto_end")] = profiler_goto_end,
+		[hash("profiler_pause")] = profiler_pause,
+		[hash("profiler_toggle")] = toggle_profile,
+		[hash("trigger_slow_frame")] = trigger_slow_frame
+		}
 	self.timer = 0
 	self.outro = false
 	self.outro_time = 118
-
+	msg.post("@render:", "use_fixed_projection", { near = -1, far = 1 })
 end
 
 function update(self, dt)
@@ -55,11 +191,25 @@ function on_reload(self)
 	}
 end
 
+local calibration_count = 20000
+
+local function recalibrate(self)
+	local a = ""
+	for i = 1, calibration_count do
+		a = tostring(i) + tostring(i + 1)
+	end
+	if calibration_count < 100000 then
+		calibration_count = calibration_count * 10
+	end
+end
+
 function on_message(self, message_id, message, sender)
 	if message_id == hash("start") then
 		msg.post("#stage", "load")
 		msg.post("#stage", "init")
 		msg.post("#stage", "enable")
+	elseif message_id == TRIGGER_SLOW_FRAME_MESSAGE then
+		recalibrate(self)
 	end
 end
 
