@@ -346,7 +346,6 @@ function update(self)
     render.draw(self.text_pred, constants)
 
     render.set_depth_mask(false)
-    render.draw_debug2d()
 end
 
 function on_message(self, message_id, message, sender)
