@@ -139,7 +139,7 @@ function init(self)
 	self.recording = false
 	self.show_wait_time = true
 	math.randomseed(1)
-	msg.post(nil, "acquire_input_focus")
+	msg.post(".", "acquire_input_focus")
 	self.paused = false
 	self.actions = {
 		[hash("profiler")] = toggle_profile,
