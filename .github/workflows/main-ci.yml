@@ -34,7 +34,7 @@ jobs:
       },
       {
         name: 'Build project',
-        run: './defold-builder/build.sh --channel=${{ matrix.channel }} --platform=${{ matrix.platform }} --variant=${{ matrix.variant }} --archive --with-symbols ${{ env.BUILD_SERVER }} build '
+        run: './defold-builder/build.sh --channel=${{ matrix.channel }} --platform=${{ matrix.platform }} --variant=${{ matrix.variant }} --archive --with-symbols --build-server=${{ env.BUILD_SERVER }} build '
       },
       {
         name: 'Bundle project',
