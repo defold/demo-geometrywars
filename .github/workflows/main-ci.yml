@@ -35,15 +35,15 @@ jobs:
       { name: 'Install defold-builder', run: 'git clone https://github.com/britzl/defold-builder.git' },
       {
         name: 'Resolve project',
-        run: './defold-builder/build.sh --channel ${{ matrix.channel }} --platform ${{ matrix.platform }} --email a@b.com --auth abc123 resolve'
+        run: './defold-builder/build.sh --channel=${{ matrix.channel }} --platform=${{ matrix.platform }} --email=a@b.com --auth=abc123 resolve'
       },
       {
         name: 'Build project',
-        run: './defold-builder/build.sh --channel ${{ matrix.channel }} --platform ${{ matrix.platform }} --variant ${{ matrix.variant }} --build-server ${{ env.BUILD_SERVER }} --archive build '
+        run: './defold-builder/build.sh --channel=${{ matrix.channel }} --platform=${{ matrix.platform }} --variant=${{ matrix.variant }} --archive build '
       },
       {
         name: 'Bundle project',
-        run: './defold-builder/build.sh --channel ${{ matrix.channel }} --platform ${{ matrix.platform }} --variant ${{ matrix.variant }} bundle'
+        run: './defold-builder/build.sh --channel=${{ matrix.channel }} --platform=${{ matrix.platform }} --variant=${{ matrix.variant }} bundle'
       }
       #,
       #{
