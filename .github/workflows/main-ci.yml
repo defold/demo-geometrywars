@@ -44,11 +44,12 @@ jobs:
       {
         name: 'Bundle project',
         run: './defold-builder/build.sh --channel ${{ matrix.channel }} --platform ${{ matrix.platform }} --variant ${{ matrix.variant }} bundle'
-      },
-      {
-        name: 'Notify if tests failed',
-        uses: homoluctus/slatify@master,
-        if: failure(),
-        with: { type: ${{ job.status }}, job_name: '${{ name }} channel: ${{ matrix.channel }} platform: ${{ matrix.platform }} failed', channel: '#defold-alarms-build', url: ${{ secrets.SLACK_WEBHOOK }} }
       }
+      #,
+      #{
+      #  name: 'Notify if tests failed',
+      #  uses: homoluctus/slatify@master,
+      #  if: failure(),
+      #  with: { type: ${{ job.status }}, job_name: '${{ name }} channel: ${{ matrix.channel }} platform: ${{ matrix.platform }} failed', channel: '#defold-alarms-build', url: ${{ secrets.SLACK_WEBHOOK }} }
+      #}
     ]
