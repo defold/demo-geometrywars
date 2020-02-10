@@ -23,7 +23,7 @@ jobs:
   build-desktop:
     strategy:
       matrix:
-        max-parallel: 2 # currently running on the live server
+        max-parallel: 2
         channel: [alpha]
         variant: [debug]
         platform: [x86_64-linux,x86_64-osx,x86_64-win32,win32,js-web]
