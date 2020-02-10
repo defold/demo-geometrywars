@@ -21,6 +21,7 @@ env:
 
 jobs:
   build-desktop:
+    name: Desktop
     strategy:
       max-parallel: 2
       matrix:
@@ -32,14 +33,14 @@ jobs:
       { name: 'Checkout', uses: actions/checkout@v2, with: { ref: '${{env.BUILD_BRANCH}}' } },
       { name: 'Install Python', uses: actions/setup-python@v1, with: { python-version: 2.x, architecture: x64 } },
       { name: 'Install Java', uses: actions/setup-java@v1, with: { java-version: '11.0.2' } },
-      { name: 'Install defold-builder', run: 'git clone https://github.com/britzl/defold-builder.git' },
+      { name: 'Install defold-builder', run: 'git clone https://github.com/britzl/defold-builder.git && git checkout github-actions-fixes' },
       {
         name: 'Resolve project',
         run: './defold-builder/build.sh --channel=${{ matrix.channel }} --platform=${{ matrix.platform }} --email=a@b.com --auth=abc123 resolve'
       },
       {
         name: 'Build project',
-        run: './defold-builder/build.sh --channel=${{ matrix.channel }} --platform=${{ matrix.platform }} --variant=${{ matrix.variant }} --archive build '
+        run: './defold-builder/build.sh --channel=${{ matrix.channel }} --platform=${{ matrix.platform }} --variant=${{ matrix.variant }} --archive --with-symbols ${{ env.BUILD_SERVER }} build '
       },
       {
         name: 'Bundle project',
