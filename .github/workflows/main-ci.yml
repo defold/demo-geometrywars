@@ -1,0 +1,54 @@
+name: "demo-geometrywars"
+
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: 0 3 * * *
+  repository_dispatch: {}
+
+env:
+  S3_ACCESS_KEY: ${{ secrets.S3_ACCESS_KEY }}
+  S3_SECRET_KEY: ${{ secrets.S3_SECRET_KEY }}
+  NOTARIZATION_USERNAME: ${{ secrets.NOTARIZATION_USERNAME }}
+  NOTARIZATION_PASSWORD: ${{ secrets.NOTARIZATION_PASSWORD }}
+  NOTARIZATION_ITC_PROVIDER: ${{ secrets.NOTARIZATION_ITC_PROVIDER }}
+  DM_PACKAGES_URL: ${{ secrets.DM_PACKAGES_URL }}
+  MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
+  MACOS_CERTIFICATE_PASS: ${{ secrets.MACOS_CERTIFICATE_PASS }}
+  BUILD_BRANCH: ${{ github.event.client_payload.branch }}
+  BUILD_SERVER: "https://build-stage.defold.com"
+
+jobs:
+  build-desktop:
+    strategy:
+      matrix:
+        max-parallel: 2 # currently running on the live server
+        channel: [alpha]
+        variant: [debug]
+        platform: [x86_64-linux,x86_64-osx,x86_64-win32,win32,js-web]
+    runs-on: ubuntu-18.04
+    steps: [
+      { name: 'Checkout', uses: actions/checkout@v2, with: { ref: '${{env.BUILD_BRANCH}}' } },
+      { name: 'Install Python', uses: actions/setup-python@v1, with: { python-version: 2.x, architecture: x64 } },
+      { name: 'Install Java', uses: actions/setup-java@v1, with: { java-version: '11.0.2' } },
+      { name: 'Install defold-builder', run: 'git clone https://github.com/britzl/defold-builder.git' },
+      {
+        name: 'Resolve project',
+        run: './defold-builder/build.sh --channel ${{ env.CHANNEL }} --platform ${{ matrix.platform }} --email a@b.com --auth abc123 resolve'
+      },
+      {
+        name: 'Build project',
+        run: './defold-builder/build.sh --channel ${{ matrix.channel }} --platform ${{ matrix.platform }} --variant ${{ matrix.variant }} --build-server ${{ env.BUILD_SERVER }} --archive build '
+      },
+      {
+        name: 'Bundle project',
+        run: './defold-builder/build.sh --channel ${{ matrix.channel }} --platform ${{ matrix.platform }} --variant ${{ matrix.variant }} bundle'
+      },
+      {
+        name: 'Notify if tests failed',
+        uses: homoluctus/slatify@master,
+        if: failure(),
+        with: { type: ${{ job.status }}, job_name: '${{ name }} channel: ${{ matrix.channel }} platform: ${{ matrix.platform }} failed', channel: '#defold-alarms-build', url: ${{ secrets.SLACK_WEBHOOK }} }
+      }
+    ]
