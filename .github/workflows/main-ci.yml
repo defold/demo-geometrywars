@@ -24,9 +24,9 @@ jobs:
     strategy:
       max-parallel: 2
       matrix:
+        platform: [x86_64-linux,x86_64-osx,x86_64-win32,win32,js-web]
         channel: [alpha]
         variant: [debug]
-        platform: [x86_64-linux,x86_64-osx,x86_64-win32,win32,js-web]
     runs-on: ubuntu-18.04
     steps: [
       { name: 'Checkout', uses: actions/checkout@v2, with: { ref: '${{env.BUILD_BRANCH}}' } },
@@ -35,7 +35,7 @@ jobs:
       { name: 'Install defold-builder', run: 'git clone https://github.com/britzl/defold-builder.git' },
       {
         name: 'Resolve project',
-        run: './defold-builder/build.sh --channel ${{ env.CHANNEL }} --platform ${{ matrix.platform }} --email a@b.com --auth abc123 resolve'
+        run: './defold-builder/build.sh --channel ${{ matrix.channel }} --platform ${{ matrix.platform }} --email a@b.com --auth abc123 resolve'
       },
       {
         name: 'Build project',
