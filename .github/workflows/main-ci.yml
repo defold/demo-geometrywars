@@ -30,7 +30,7 @@ jobs:
       { name: 'Install defold-builder', run: 'git clone https://github.com/britzl/defold-builder.git' },
       {
         name: 'Resolve project',
-        run: './defold-builder/build.sh --channel=${{ matrix.channel }} --platform=mawe_test_${{ matrix.platform }} --email=a@b.com --auth=abc123 resolve'
+        run: 'asd && ./defold-builder/build.sh --channel=${{ matrix.channel }} --email=a@b.com --auth=abc123 resolve'
       },
       {
         name: 'Build project',
@@ -65,7 +65,7 @@ jobs:
       { name: 'Install defold-builder', run: 'git clone https://github.com/britzl/defold-builder.git' },
       {
         name: 'Resolve project',
-        run: './defold-builder/build.sh --channel=${{ matrix.channel }} --platform=${{ matrix.platform }} --email=a@b.com --auth=abc123 resolve'
+        run: './defold-builder/build.sh --channel=${{ matrix.channel }} --email=a@b.com --auth=abc123 resolve'
       },
       {
         name: 'Build project',
