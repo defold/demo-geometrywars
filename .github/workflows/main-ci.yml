@@ -30,7 +30,7 @@ jobs:
       { name: 'Install defold-builder', run: 'git clone https://github.com/britzl/defold-builder.git' },
       {
         name: 'Resolve project',
-        run: 'asd && ./defold-builder/build.sh --channel=${{ matrix.channel }} --email=a@b.com --auth=abc123 resolve'
+        run: './defold-builder/build.sh --channel=${{ matrix.channel }} --email=a@b.com --auth=abc123 resolve'
       },
       {
         name: 'Build project',
@@ -79,7 +79,7 @@ jobs:
       {
        name: 'Notify if build status changed',
        uses: homoluctus/slatify@master,
-       if: failure(),
+       if: always(),
        with: { type: '${{ job.status }}', job_name: '${{ job.status }}: channel: ${{ matrix.channel }} platform: ${{ matrix.platform }}', channel: '#defold-alarms-build', url: '${{ secrets.SLACK_WEBHOOK }}',
                mention: 'here', mention_if: 'failure' }
       }
