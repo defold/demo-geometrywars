@@ -19,10 +19,46 @@ jobs:
     strategy:
       max-parallel: 2
       matrix:
-        platform: [x86_64-linux,x86_64-darwin,x86_64-win32,x86-win32,js-web]
+        platform: [x86_64-linux,x86_64-darwin,x86_64-win32,x86-win32,js-web,armv7-android]
         channel: [alpha]
         variant: [debug]
     runs-on: ubuntu-18.04
+    steps: [
+      { name: 'Checkout', uses: actions/checkout@v2, with: { ref: '${{env.BUILD_BRANCH}}' } },
+      { name: 'Install Python', uses: actions/setup-python@v1, with: { python-version: 2.x, architecture: x64 } },
+      { name: 'Install Java', uses: actions/setup-java@v1, with: { java-version: '11.0.2' } },
+      { name: 'Install defold-builder', run: 'git clone https://github.com/britzl/defold-builder.git' },
+      {
+        name: 'Resolve project',
+        run: './defold-builder/build.sh --channel=${{ matrix.channel }} --platform=${{ matrix.platform }} --email=a@b.com --auth=abc123 resolve'
+      },
+      {
+        name: 'Build project',
+        run: './defold-builder/build.sh --channel=${{ matrix.channel }} --platform=${{ matrix.platform }} --variant=${{ matrix.variant }} --archive --with-symbols --build-server=${{ env.BUILD_SERVER }} build '
+      },
+      {
+        name: 'Bundle project',
+        run: './defold-builder/build.sh --channel=${{ matrix.channel }} --platform=${{ matrix.platform }} --variant=${{ matrix.variant }} bundle'
+      }
+      #,
+      #{
+      #  name: 'Notify if tests failed',
+      #  uses: homoluctus/slatify@master,
+      #  if: failure(),
+      #  with: { type: ${{ job.status }}, job_name: '${{ name }} channel: ${{ matrix.channel }} platform: ${{ matrix.platform }} failed', channel: '#defold-alarms-build', url: ${{ secrets.SLACK_WEBHOOK }} }
+      #}
+    ]
+
+  # until we have lipo et al working on other platforms
+  build-ios:
+    name: iOS
+    strategy:
+      max-parallel: 2
+      matrix:
+        platform: [armv7-darwin]
+        channel: [alpha]
+        variant: [debug]
+    runs-on: macos-latest
     steps: [
       { name: 'Checkout', uses: actions/checkout@v2, with: { ref: '${{env.BUILD_BRANCH}}' } },
       { name: 'Install Python', uses: actions/setup-python@v1, with: { python-version: 2.x, architecture: x64 } },
