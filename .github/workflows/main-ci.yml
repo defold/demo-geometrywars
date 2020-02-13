@@ -43,7 +43,7 @@ jobs:
       {
        name: 'Notify if tests failed',
        uses: homoluctus/slatify@master,
-       if: 'failure()',
+       if: "failure()",
        with: { type: ${{ job.status }}, job_name: '${{ name }} channel: ${{ matrix.channel }} platform: ${{ matrix.platform }} failed', channel: '#defold-alarms-build', url: ${{ secrets.SLACK_WEBHOOK }} }
       }
     ]
@@ -78,7 +78,7 @@ jobs:
       {
        name: 'Notify if tests failed',
        uses: homoluctus/slatify@master,
-       if: 'failure()',
+       if: "failure()",
        with: { type: ${{ job.status }}, job_name: '${{ name }} channel: ${{ matrix.channel }} platform: ${{ matrix.platform }} failed', channel: '#defold-alarms-build', url: ${{ secrets.SLACK_WEBHOOK }} }
       }
     ]
