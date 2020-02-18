@@ -40,16 +40,16 @@ jobs:
         name: 'Bundle project',
         run: './defold-builder/build.sh --channel=${{ matrix.channel }} --platform=${{ matrix.platform }} --variant=${{ matrix.variant }} bundle'
       },
-      {
-        name: 'Zip bundle',
-        run: 'zip -r bundle-${{ matrix.platform }}-${{ matrix.channel }}-${{ matrix.variant }}.zip build'
-      },
+      # {
+      #   name: 'Zip bundle',
+      #   run: 'zip -r bundle-${{ matrix.platform }}-${{ matrix.channel }}-${{ matrix.variant }}.zip build'
+      # },
       {
         name: 'Upload build artifact',
         uses: actions/upload-artifact@v1,
         with: {
           name: 'Geometrywars-${{ matrix.platform }}-${{ matrix.channel }}-${{ matrix.variant }}',
-          path: 'bundle-${{ matrix.platform }}-${{ matrix.channel }}-${{ matrix.variant }}.zip'
+          path: 'build/${{ matrix.platform }}'
         }
       },
       {
