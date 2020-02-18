@@ -48,7 +48,7 @@ jobs:
         name: 'Upload build artifact',
         uses: actions/upload-artifact@v1,
         with: {
-          name: 'Geometrywars-${{ matrix.platform }}-${{ matrix.channel }}-${{ matrix.variant }}'
+          name: 'Geometrywars-${{ matrix.platform }}-${{ matrix.channel }}-${{ matrix.variant }}',
           path: 'bundle-${{ matrix.platform }}-${{ matrix.channel }}-${{ matrix.variant }}.zip'
         }
       },
