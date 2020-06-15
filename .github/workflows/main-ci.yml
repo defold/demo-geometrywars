@@ -40,14 +40,14 @@ jobs:
         name: 'Bundle project',
         run: './defold-builder/build.sh --channel=${{ matrix.channel }} --platform=${{ matrix.platform }} --variant=${{ matrix.variant }} bundle'
       },
-      {
-        name: 'Upload build artifact',
-        uses: actions/upload-artifact@v1,
-        with: {
-          name: 'Geometrywars-${{ matrix.platform }}-${{ matrix.channel }}-${{ matrix.variant }}',
-          path: 'build/${{ matrix.platform }}'
-        }
-      },
+      # {
+      #   name: 'Upload build artifact',
+      #   uses: actions/upload-artifact@v1,
+      #   with: {
+      #     name: 'Geometrywars-${{ matrix.platform }}-${{ matrix.channel }}-${{ matrix.variant }}',
+      #     path: 'build/${{ matrix.platform }}'
+      #   }
+      # },
       {
        name: 'Notify if build status changed',
        uses: homoluctus/slatify@master,
@@ -88,14 +88,14 @@ jobs:
         name: 'Bundle project',
         run: './defold-builder/build.sh --channel=${{ matrix.channel }} --platform=${{ matrix.platform }} --variant=${{ matrix.variant }} bundle'
       },
-      {
-        name: 'Upload build artifact',
-        uses: actions/upload-artifact@v1,
-        with: {
-          name: 'Geometrywars-${{ matrix.platform }}-${{ matrix.channel }}-${{ matrix.variant }}',
-          path: 'build/${{ matrix.platform }}'
-        }
-      },
+      # {
+      #   name: 'Upload build artifact',
+      #   uses: actions/upload-artifact@v1,
+      #   with: {
+      #     name: 'Geometrywars-${{ matrix.platform }}-${{ matrix.channel }}-${{ matrix.variant }}',
+      #     path: 'build/${{ matrix.platform }}'
+      #   }
+      # },
       {
        name: 'Notify if build status changed',
        uses: homoluctus/slatify@master,
