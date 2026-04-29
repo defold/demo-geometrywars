@@ -1,63 +1,94 @@
 platforms:
     armv7-ios:
         context:
-            excludeLibs: [profilerext]
+            excludeLibs: [physics, LinearMath, BulletDynamics, BulletCollision, liveupdate]
             excludeSymbols: [ProfilerExt]
-            libs: []
+            symbols: []
+            libs: [physics_2d_defold, liveupdate_null]
             linkFlags: []
     arm64-ios:
         context:
-            excludeLibs: [profilerext]
+            excludeLibs: [physics, LinearMath, BulletDynamics, BulletCollision, liveupdate]
             excludeSymbols: [ProfilerExt]
-            libs: []
+            symbols: []
+            libs: [physics_2d_defold, liveupdate_null]
             linkFlags: []
+    x86_64-ios:
+        context:
+            excludeLibs: [physics, LinearMath, BulletDynamics, BulletCollision, liveupdate]
+            excludeSymbols: []
+            symbols: []
+            libs: [physics_2d_defold, liveupdate_null]
     armv7-android:
         context:
-            excludeLibs: [profilerext]
+            excludeLibs: [physics, LinearMath, BulletDynamics, BulletCollision, liveupdate]
             excludeJars: []
             excludeSymbols: [ProfilerExt]
-            libs: []
+            symbols: []
+            libs: [physics_2d_defold, liveupdate_null]
             linkFlags: []
+    arm64-android:
+        context:
+            excludeLibs: [physics, LinearMath, BulletDynamics, BulletCollision, liveupdate]
+            excludeSymbols: []
+            symbols: []
+            libs: [physics_2d_defold, liveupdate_null]
     arm64-osx:
         context:
-            excludeLibs: [graphics_vulkan, platform_vulkan, MoltenVK]
+            excludeLibs: [graphics_vulkan, platform_vulkan, MoltenVK, physics, LinearMath, BulletDynamics, BulletCollision, liveupdate]
             excludeSymbols: [GraphicsAdapterVulkan]
             symbols: [GraphicsAdapterOpenGL]
-            libs: [graphics, platform]
+            libs: [graphics, platform, physics_2d_defold, liveupdate_null]
             frameworks: [OpenGL]
     x86_64-osx:
         context:
-            excludeLibs: [profilerext, graphics_vulkan, platform_vulkan, MoltenVK]
+            excludeLibs: [graphics_vulkan, platform_vulkan, MoltenVK, physics, LinearMath, BulletDynamics, BulletCollision, liveupdate]
             excludeSymbols: [ProfilerExt, GraphicsAdapterVulkan]
             symbols: [GraphicsAdapterOpenGL]
-            libs: [profilerext_null, graphics, platform]
+            libs: [graphics, platform, physics_2d_defold, liveupdate_null]
             frameworks: [OpenGL]
             linkFlags: []
     x86_64-linux:
         context:
-            excludeLibs: [profilerext]
+            excludeLibs: [physics, LinearMath, BulletDynamics, BulletCollision, liveupdate]
             excludeSymbols: [ProfilerExt]
-            libs: []
+            symbols: []
+            libs: [physics_2d_defold, liveupdate_null]
             linkFlags: []
+    arm64-linux:
+        context:
+            excludeLibs: [physics, LinearMath, BulletDynamics, BulletCollision, liveupdate]
+            excludeSymbols: []
+            symbols: []
+            libs: [physics_2d_defold, liveupdate_null]
     x86-win32:
         context:
-            excludeLibs: [libprofilerext]
+            excludeLibs: [libphysics, libLinearMath, libBulletDynamics, libBulletCollision, libliveupdate]
             excludeSymbols: [ProfilerExt]
-            libs: []
+            symbols: []
+            libs: [libphysics_2d_defold.lib, libliveupdate_null.lib]
             linkFlags: []
     x86_64-win32:
         context:
-            excludeLibs: [libprofilerext]
+            excludeLibs: [libphysics, libLinearMath, libBulletDynamics, libBulletCollision, libliveupdate]
             excludeSymbols: [ProfilerExt]
-            libs: []
+            symbols: []
+            libs: [libphysics_2d_defold.lib, libliveupdate_null.lib]
             linkFlags: []
     wasm-web:
         context:
-            excludeLibs: [profilerext]
+            excludeLibs: [physics, LinearMath, BulletDynamics, BulletCollision, liveupdate]
             excludeJsLibs: []
             excludeSymbols: [ProfilerExt]
-            libs: []
+            symbols: []
+            libs: [physics_2d_defold, liveupdate_null]
             linkFlags: []
+    wasm_pthread-web:
+        context:
+            excludeLibs: [physics, LinearMath, BulletDynamics, BulletCollision, liveupdate]
+            excludeSymbols: []
+            symbols: []
+            libs: [physics_2d_defold, liveupdate_null]
     js-web:
         context:
             excludeLibs: [profilerext]
