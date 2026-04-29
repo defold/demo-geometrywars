@@ -62,11 +62,11 @@ end
 
 local function send_attractor(i, p, f)
 	local p = p * (1.0)
-	msg.post("#model", "set_constant", { name_hash = hash("attractor" .. i), value = vmath.vector4(p.x, p.y, 1, f)})
+	msg.post("#grid", "set_constant", { name_hash = hash("attractor" .. i), value = vmath.vector4(p.x, p.y, 1, f)})
 end
 
 local function clear_attractor(i)
-	msg.post("#model", "set_constant", { name_hash = hash("attractor" .. i), value = vmath.vector4(0, 0, 0, 0)})
+	msg.post("#grid", "set_constant", { name_hash = hash("attractor" .. i), value = vmath.vector4(0, 0, 0, 0)})
 end
 
 function update(self, dt)
@@ -119,8 +119,8 @@ function on_message(self, message_id, message, sender)
 		--add_impact(self, message.value * 0.02, message.position)
 		local particle = sender
 		particle.fragment = hash("particlefx")
-        particlefx.set_constant(particle, "emitter", "tint", self.color)
+		particlefx.set_constant(particle, "emitter", "tint", self.color)
 		particle.fragment = hash("particlefx_light")
-        particlefx.set_constant(particle, "emitter", "tint", self.color)
+		particlefx.set_constant(particle, "emitter", "tint", self.color)
 	end
 end

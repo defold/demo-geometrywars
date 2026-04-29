@@ -1,0 +1,206 @@
+{
+  "asset": {
+    "generator": "glTF-Transform v4.2.1",
+    "version": "2.0"
+  },
+  "accessors": [
+    {
+      "type": "VEC3",
+      "componentType": 5126,
+      "count": 34032,
+      "max": [
+        1081.5,
+        601.5001220703125,
+        0
+      ],
+      "min": [
+        -1.5,
+        -1.5,
+        0
+      ],
+      "bufferView": 0,
+      "byteOffset": 0
+    },
+    {
+      "type": "VEC3",
+      "componentType": 5126,
+      "count": 34032,
+      "bufferView": 0,
+      "byteOffset": 12
+    },
+    {
+      "type": "VEC2",
+      "componentType": 5126,
+      "count": 34032,
+      "bufferView": 0,
+      "byteOffset": 24
+    },
+    {
+      "type": "SCALAR",
+      "componentType": 5125,
+      "count": 34032,
+      "bufferView": 1,
+      "byteOffset": 0
+    }
+  ],
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteOffset": 0,
+      "byteLength": 1089024,
+      "byteStride": 32,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 1089024,
+      "byteLength": 136128,
+      "target": 34963
+    }
+  ],
+  "buffers": [
+    {
+      "uri": "grid6.bin",
+      "byteLength": 1225152
+    }
+  ],
+  "materials": [
+    {
+      "name": "Default_Material_001",
+      "alphaMode": "BLEND",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.5,
+          0.5,
+          0.5,
+          0
+        ],
+        "roughnessFactor": 0.888196587562561,
+        "metallicFactor": 0
+      },
+      "extensions": {
+        "KHR_materials_ior": {
+          "ior": 1
+        }
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "polySurface3Mesh_001-mesh",
+      "primitives": [
+        {
+          "attributes": {
+            "POSITION": 0,
+            "NORMAL": 1,
+            "TEXCOORD_0": 2
+          },
+          "mode": 4,
+          "material": 0,
+          "indices": 3
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "name": "Scene",
+      "rotation": [
+        -0.7071067811865475,
+        0,
+        0,
+        0.7071067811865476
+      ],
+      "children": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    {
+      "name": "Camera",
+      "translation": [
+        7.4811320304870605,
+        -6.5076398849487305,
+        5.34366512298584
+      ],
+      "rotation": [
+        0.4835360340224595,
+        0.20870361115384656,
+        0.3368715967977633,
+        0.7804826930571964
+      ]
+    },
+    {
+      "name": "Lamp",
+      "translation": [
+        4.076244831085205,
+        1.0054539442062378,
+        5.903861999511719
+      ],
+      "rotation": [
+        0.16907574102949194,
+        0.27217135075408133,
+        0.7558803306465273,
+        0.5709475265411021
+      ]
+    },
+    {
+      "name": "Camera_001",
+      "translation": [
+        7.4811320304870605,
+        -6.5076398849487305,
+        5.34366512298584
+      ],
+      "rotation": [
+        0.4835360414531272,
+        0.20870361205981494,
+        0.33687157055437567,
+        0.7804826944742291
+      ]
+    },
+    {
+      "name": "Lamp_001",
+      "translation": [
+        4.076244831085205,
+        1.0054539442062378,
+        5.903861999511719
+      ],
+      "rotation": [
+        0.16907573875985418,
+        0.27217137358373056,
+        0.7558803550554405,
+        0.5709474694950054
+      ]
+    },
+    {
+      "name": "polySurface3",
+      "rotation": [
+        0.7071067811865475,
+        0,
+        0,
+        0.7071067811865476
+      ],
+      "scale": [
+        1.184999942779541,
+        1.1979999542236328,
+        1
+      ],
+      "mesh": 0
+    }
+  ],
+  "scenes": [
+    {
+      "nodes": [
+        0
+      ]
+    }
+  ],
+  "scene": 0,
+  "extensionsUsed": [
+    "KHR_materials_ior",
+    "KHR_materials_volume"
+  ]
+}

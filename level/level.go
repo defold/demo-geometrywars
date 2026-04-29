@@ -1,74 +1,29 @@
 components {
   id: "particlefx"
   component: "/enemy/enemy_death.particlefx"
-  position {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
 }
 components {
   id: "particlefx_light"
   component: "/enemy/light.particlefx"
-  position {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
 }
 components {
   id: "script"
   component: "/level/level.script"
-  position {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
 }
 embedded_components {
   id: "blur"
   type: "model"
-  data: "mesh: \"/materials/quad.dae\"\n"
-  "material: \"/materials/blur.material\"\n"
-  "skeleton: \"\"\n"
-  "animations: \"\"\n"
-  "default_animation: \"\"\n"
+  data: "mesh: \"/materials/quad.gltf\"\n"
+  "materials {\n"
+  "  name: \"lambert1_004\"\n"
+  "  material: \"/materials/blur.material\"\n"
+  "}\n"
   ""
-  position {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
 }
 embedded_components {
   id: "collisionobject"
   type: "collisionobject"
-  data: "collision_shape: \"\"\n"
-  "type: COLLISION_OBJECT_TYPE_STATIC\n"
+  data: "type: COLLISION_OBJECT_TYPE_STATIC\n"
   "mass: 0.0\n"
   "friction: 0.1\n"
   "restitution: 0.5\n"
@@ -82,13 +37,8 @@ embedded_components {
   "    position {\n"
   "      x: 1.187844\n"
   "      y: 314.62314\n"
-  "      z: 0.0\n"
   "    }\n"
   "    rotation {\n"
-  "      x: 0.0\n"
-  "      y: 0.0\n"
-  "      z: 0.0\n"
-  "      w: 1.0\n"
   "    }\n"
   "    index: 0\n"
   "    count: 3\n"
@@ -98,13 +48,8 @@ embedded_components {
   "    position {\n"
   "      x: 1191.1879\n"
   "      y: 314.62314\n"
-  "      z: 0.0\n"
   "    }\n"
   "    rotation {\n"
-  "      x: 0.0\n"
-  "      y: 0.0\n"
-  "      z: 0.0\n"
-  "      w: 1.0\n"
   "    }\n"
   "    index: 3\n"
   "    count: 3\n"
@@ -114,13 +59,8 @@ embedded_components {
   "    position {\n"
   "      x: 596.18787\n"
   "      y: -0.37687582\n"
-  "      z: 0.0\n"
   "    }\n"
   "    rotation {\n"
-  "      x: 0.0\n"
-  "      y: 0.0\n"
-  "      z: 0.0\n"
-  "      w: 1.0\n"
   "    }\n"
   "    index: 6\n"
   "    count: 3\n"
@@ -130,13 +70,8 @@ embedded_components {
   "    position {\n"
   "      x: 596.18787\n"
   "      y: 629.6231\n"
-  "      z: 0.0\n"
   "    }\n"
   "    rotation {\n"
-  "      x: 0.0\n"
-  "      y: 0.0\n"
-  "      z: 0.0\n"
-  "      w: 1.0\n"
   "    }\n"
   "    index: 9\n"
   "    count: 3\n"
@@ -154,84 +89,32 @@ embedded_components {
   "  data: 5.0\n"
   "  data: 10.0\n"
   "}\n"
-  "linear_damping: 0.0\n"
-  "angular_damping: 0.0\n"
-  "locked_rotation: false\n"
   ""
-  position {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
 }
 embedded_components {
-  id: "model"
+  id: "grid"
   type: "model"
-  data: "mesh: \"/level/grid6.dae\"\n"
-  "material: \"/level/grid.material\"\n"
-  "textures: \"/level/line.png\"\n"
-  "skeleton: \"\"\n"
-  "animations: \"\"\n"
-  "default_animation: \"\"\n"
+  data: "mesh: \"/level/grid6.gltf\"\n"
+  "materials {\n"
+  "  name: \"Default_Material_001\"\n"
+  "  material: \"/level/grid.material\"\n"
+  "}\n"
+  "create_go_bones: false\n"
   ""
-  position {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-}
-embedded_components {
-  id: "quad"
-  type: "model"
-  data: "mesh: \"/materials/quad.dae\"\n"
-  "material: \"/materials/quad.material\"\n"
-  "skeleton: \"\"\n"
-  "animations: \"\"\n"
-  "default_animation: \"\"\n"
-  ""
-  position {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
 }
 embedded_components {
   id: "sound"
   type: "sound"
   data: "sound: \"/level/overloadshortmaster.wav\"\n"
-  "looping: 0\n"
-  "group: \"master\"\n"
-  "gain: 1.0\n"
-  "pan: 0.0\n"
-  "speed: 1.0\n"
   ""
-  position {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
+}
+embedded_components {
+  id: "quad"
+  type: "model"
+  data: "mesh: \"/materials/quad.gltf\"\n"
+  "materials {\n"
+  "  name: \"lambert1_004\"\n"
+  "  material: \"/materials/quad.material\"\n"
+  "}\n"
+  ""
 }
