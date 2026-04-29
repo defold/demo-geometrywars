@@ -1,12 +1,12 @@
 local M = {}
 
 function M.hsl(h, s, l)
-	c = (1 - math.abs(2 * l - 1)) * s
-	hp = h / 60
-	x = c * (1 - math.abs((hp % 2) - 1))
-	r = 0
-	g = 0
-	b = 0
+	local c = (1 - math.abs(2 * l - 1)) * s
+	local hp = h / 60
+	local x = c * (1 - math.abs((hp % 2) - 1))
+	local r = 0
+	local g = 0
+	local b = 0
 	if hp < 1 then
 		r = c
 		g = x
@@ -32,7 +32,7 @@ function M.hsl(h, s, l)
 		g = 0
 		b = x
 	end
-	m = l - 0.5 * c
+	local m = l - 0.5 * c
 	return vmath.vector4(r+m, g+m, b+m, 1)
 end
 

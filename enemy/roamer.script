@@ -1,11 +1,9 @@
 local level_util = require "level.level_util"
-local dynammics = require "shared.dynamics"
+local dynamics = require "shared.dynamics"
 local roaming = require("enemy.roaming")
 
 local color = vmath.vector4(0.5, 0.1, 0.8, 1)
-local particle_color = vmath.vector4(1, 0.2, 0.3, 1)
 
-local death_duration = 2
 local spawn_duration = 0.8
 local spawn_bob_rate = 5
 local spawn_bob_mag = 0.5

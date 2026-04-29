@@ -194,9 +194,9 @@ end
 local calibration_count = 20000
 
 local function recalibrate(self)
-	local a = ""
+	local _ = ""
 	for i = 1, calibration_count do
-		a = tostring(i) + tostring(i + 1)
+		_ = tostring(i) + tostring(i + 1)
 	end
 	if calibration_count < 100000 then
 		calibration_count = calibration_count * 10

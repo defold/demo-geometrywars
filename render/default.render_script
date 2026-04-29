@@ -1,7 +1,6 @@
 local LIGHT_SIZE = 512
 local SIZE = 512
 local PASS_COUNT = 4
-local INV_KERNEL_SUM = 1/16
 
 local RM_LIGHTS = hash("render1")
 local RM_NO_POSTFX = hash("render2")
