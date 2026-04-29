@@ -4,7 +4,7 @@ varying lowp vec4 var_face_color;
 varying lowp vec4 var_outline_color;
 varying lowp vec4 var_shadow_color;
 varying mediump vec4 var_sdf_params;
-uniform lowp sampler2D texture;
+uniform lowp sampler2D texture_sampler;
 uniform lowp vec4 texture_size_recip;
 uniform mediump vec4 config;
 
@@ -17,7 +17,7 @@ vec3 hsv2rgb(vec3 c)
 
 void main()
 {
-    lowp float distance = texture2D(texture, var_texcoord0).x;
+    lowp float distance = texture2D(texture_sampler, var_texcoord0).x;
 
     lowp float sdf_edge = var_sdf_params.x;
     lowp float sdf_outline = var_sdf_params.y;
