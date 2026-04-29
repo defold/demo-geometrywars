@@ -13,7 +13,7 @@ void main()
     float glow_rate = 0.7;
     float light_rate = 0.2;
 
-	vec4 sum_post = vec4(0.0);
+    vec4 sum_post = vec4(0.0);
     sum_post += texture2D(post1, var_texcoord0.xy);
     sum_post += texture2D(post2, var_texcoord0.xy);
     sum_post += texture2D(post3, var_texcoord0.xy);
