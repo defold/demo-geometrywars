@@ -160,7 +160,7 @@ function init(self)
 	self.timer = 0
 end
 
-function blit(self, source, target)
+local function blit(self, source, target)
     render.set_depth_mask(false)
     render.disable_state(render.STATE_DEPTH_TEST)
     render.disable_state(render.STATE_BLEND)
