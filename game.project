@@ -74,3 +74,6 @@ max_characters = 8192
 max_debug_vertices = 20000
 texture_profiles = /builtins/graphics/default.texture_profiles
 
+[native_extension]
+app_manifest = /release.appmanifest
+
