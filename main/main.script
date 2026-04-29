@@ -166,7 +166,6 @@ function init(self)
 	self.timer = 0
 	self.outro = false
 	self.outro_time = 118
-	msg.post("@render:", "use_fixed_projection", { near = -1, far = 1 })
 end
 
 function update(self, dt)
