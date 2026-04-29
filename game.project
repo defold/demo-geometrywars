@@ -23,6 +23,7 @@ max_contacts = 256
 [particle_fx]
 max_particle_count = 10000
 max_count = 128
+max_emitter_count = 128
 
 [sprite]
 max_count = 356
