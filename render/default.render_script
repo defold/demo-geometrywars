@@ -85,7 +85,6 @@ function init(self)
 
     self.tile_pred = render.predicate({"tile"})
     self.gui_pred = render.predicate({"gui"})
-    self.text_pred = render.predicate({"text"})
     self.particle_pred = render.predicate({"particle"})
     self.particle_light_pred = render.predicate({"particle_light"})
     self.particle_bg_pred = render.predicate({"particle_bg"})
@@ -306,21 +305,24 @@ end
 function update(self)
     draw(self)
 
+    -- draw debug lines
+    render.set_view(self.view)
+    render.set_projection(self.projection)
+    render.set_viewport(0, 0, render.get_window_width(), render.get_window_height())
+    render.draw_debug3d()
+
+    -- draw gui and text
     local ww = render.get_window_width()
     local wh = render.get_window_height()
     render.set_viewport(0, 0, ww, wh)
     render.set_view(IDENTITY_M4)
     render.set_projection(vmath.matrix4_orthographic(0, ww, 0, wh, -1, 1))
-    render.draw_debug3d()
 
     local constants = self.gui_constants
     self.timer = self.timer + 0.016666 * 0.5
     constants.config = vmath.vector4(self.timer, 0.0, 0.0, 0.0)
     local options = { constants = constants }
     render.draw(self.gui_pred, options)
-    render.draw(self.text_pred, options)
-
-    render.set_depth_mask(false)
 end
 
 function on_message(self, message_id, message, sender)
