@@ -5,10 +5,14 @@ fragment_program: "/materials/blur.fp"
 fragment_constants {
   name: "offsets"
   type: CONSTANT_TYPE_USER
+  value {
+  }
 }
 fragment_constants {
   name: "coefficients"
   type: CONSTANT_TYPE_USER
+  value {
+  }
 }
 samplers {
   name: "T"

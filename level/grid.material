@@ -13,16 +13,24 @@ vertex_constants {
 vertex_constants {
   name: "attractor1"
   type: CONSTANT_TYPE_USER
+  value {
+  }
 }
 vertex_constants {
   name: "attractor2"
   type: CONSTANT_TYPE_USER
+  value {
+  }
 }
 vertex_constants {
   name: "attractor3"
   type: CONSTANT_TYPE_USER
+  value {
+  }
 }
 vertex_constants {
   name: "attractor4"
   type: CONSTANT_TYPE_USER
+  value {
+  }
 }
